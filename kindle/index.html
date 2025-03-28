@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Boldonse&family=Cutive+Mono&family=LXGW+WenKai+Mono+TC&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Sono:wght@200..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style/main.css">
+    <script src="main.js"></script>
+    <title>Ki..ller</title>
+</head>
+
+<body>
+    <div class="toolbar">
+        <h1 class="logo boldonse-regular">Ki..ller</h1>
+        <div class="menu-container">
+            <button class="menu-button" id="menu-toggle">☰</button>
+            <div class="dropdown">
+                <h3>Tamaño letra</h3>
+                <div class="font-size-options">
+                    <button class="font-size-button" id="increase-font">+</button>
+                    <button class="font-size-button" id="decrease-font">-</button>
+                </div>
+                <h3>Fuente</h3>
+                <div class="font-options">
+                    <button class="font-button" id="font1">Cutive Mono</button>
+                    <button class="font-button" id="font2">LXGW WenKai Mono TC</button>
+                    <button class="font-button" id="font3">Old Standard TT</button>
+                    <button class="font-button" id="font4">Sono</button>
+                </div>
+                <h3>Color de fondo</h3>
+                <div class="color-options">
+                    <button class="color-button" id="modo-dia">Modo Día</button>
+                    <button class="color-button" id="modo-noche">Modo Noche</button>
+                    <button class="color-button" id="modo-lectura">Modo Lectura</button>
+                </div>
+                <h3>Espacio entre letras</h3>
+                <div class="letter-spacing-options">
+                    <button class="letter-spacing-button" id="increase-letter-spacing">+</button>
+                    <button class="letter-spacing-button" id="decrease-letter-spacing">-</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="reader-container">
+            <button class="nav-button" id="prev-page">←</button>
+            <div class="modo-lectura old-standard-tt-regular-italic" id="reader"></div>
+            <button class="nav-button" id="next-page">→</button>
+        </div>
+    </div>
+</body>
+
+</html>
