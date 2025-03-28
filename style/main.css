@@ -1,3 +1,5 @@
+@import url('font.css');
+
 * {
     margin: 0;
     padding: 0;
@@ -46,24 +48,10 @@ body {
 .canvas-container {
     width: 80%;
     height: 80%;
-    background-color: white;
+    background-color: rgb(255, 228, 188);
     border-radius: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.merriweather-std {
-    font-family: "Merriweather", serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings:
-        "wdth" 100;
-}
-.boldonse-regular {
-    font-family: "Boldonse", system-ui;
-    font-weight: 400;
-    font-style: normal;
-}
-
