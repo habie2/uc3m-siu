@@ -30,6 +30,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('prev-page', () => {
+        console.log('📲 Enviando evento: prev-page');
+        io.emit('prev-page');
     });
 
     socket.on('disconnect', () => {

@@ -17,5 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("📥 Recibido evento: next-page");
         nextPage(); // Avanzar de página cuando llegue el evento
     });
+    socket.on("prev-page", () => {
+        console.log("📥 Recibido evento: prev-page");
+        prevPage(); // Retroceder de página cuando llegue el evento
+    });
 
 });
