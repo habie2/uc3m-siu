@@ -1,0 +1,65 @@
+@import url("font.css");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #333;
+  text-align: center;
+  color: rgb(221, 221, 221);
+}
+h1 {
+  font-size: 4rem;
+  margin-bottom: 8rem;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.change-page-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+button svg {
+  width: 5rem;
+  height: 5rem;
+  fill: rgb(221, 221, 221);
+}
+
+#exit-book svg {
+  fill: rgb(210, 175, 48);
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
