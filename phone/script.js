@@ -2,8 +2,18 @@ const socket = io();
 
 let lastGamma = null;
 let lastActionTime = 0;
+let lastInteractionTime = Date.now();
+const inactivityThreshold = 30000; // 30000 = 30 segundos, cambiar cuando funcione a 3min o algo así
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// resetea el temporizador con cada interacción del usuario
+function resetInactivityTimer() {
+    console.log("Reseteando temporizador de inactividad");
+    lastInteractionTime = Date.now();
+}
+
+
 
 if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", (event) => {
@@ -25,6 +35,7 @@ if (window.DeviceOrientationEvent) {
             }
 
             lastActionTime = now;
+            resetInactivityTimer();
         }
 
         lastGamma = gamma;
@@ -46,12 +57,14 @@ if (!SpeechRecognition) {
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.trim().toLowerCase();
         console.log("Escuchado:", transcript);
-
+        //resetInactivityTimer(); // a lo mejor debería resetear solo si reconoce alguna acción
         if (transcript.includes("pasa")) {
             console.log("Comando: pasa");
+            resetInactivityTimer();
             socket.emit("next-page");  // Emitir evento de página siguiente al servidor
         } else if (transcript.includes("vuelve")) {
             console.log("Comando: vuelve");
+            resetInactivityTimer();
             socket.emit("prev-page");  // Emitir evento de página anterior al servidor
         } else {
             console.log("Comando no reconocido:", transcript);
@@ -77,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextButton = document.getElementById("next-page");
     nextButton.addEventListener("click", function () {
         socket.emit("next-page");
+        resetInactivityTimer();
     });
 });
 
@@ -84,5 +98,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextButton = document.getElementById("prev-page");
     nextButton.addEventListener("click", function () {
         socket.emit("prev-page");
+        resetInactivityTimer();
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const nextButton = document.getElementById("exit-book");
+    nextButton.addEventListener("click", function () {
+        socket.emit("next-page");
+        resetInactivityTimer();
+    });
+});
+
+setInterval(() => {
+    const now = Date.now();
+    if (now - lastInteractionTime > inactivityThreshold) {
+        console.log("Inactividad detectada. Apagando pantalla.");
+        socket.emit("turn-off"); // debería ser un evento de apagado de pantalla
+        resetInactivityTimer();
+        lastInteractionTime = now; // Evita múltiples emisiones seguidas
+    }
+}, 5000);

@@ -1,5 +1,5 @@
 import { loadBook } from "./reader.js";
-import { nextPage, prevPage } from "./navigate.js";
+import { nextPage, prevPage, apagarEbook } from "./navigate.js";
 
 const socket = io();
 
@@ -22,4 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
         prevPage(); // Retroceder de página cuando llegue el evento
     });
 
+    socket.on("turn-off", () => {
+        console.log("Recibido evento: turn-off");
+        apagarEbook(); // Retroceder de página cuando llegue el evento
+    });
 });

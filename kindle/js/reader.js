@@ -15,7 +15,7 @@ export function loadBook(book) {
                 showPage(currentPage);
             });
         })
-        .catch(error => console.error("❌ Error al cargar el archivo:", error));
+        .catch(error => console.error("Error al cargar el archivo:", error));
 }
 
 function waitForReaderSize(callback) {
@@ -29,7 +29,7 @@ function waitForReaderSize(callback) {
 
 export function showPage(pageIndex) {
     if (pages.length === 0) {
-        console.warn("⚠ No hay páginas cargadas.");
+        console.warn("No hay páginas cargadas.");
         return;
     }
 
