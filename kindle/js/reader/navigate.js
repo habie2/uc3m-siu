@@ -14,3 +14,8 @@ export function prevPage() {
         setCurrentPage(currentPage - 1);
     }
 }
+
+export function apagarEbook() {
+    //window.close();
+    document.body.style.display = "none";
+}

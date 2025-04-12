@@ -1,0 +1,12 @@
+[
+  {
+    "file": "el-nombre-del-viento.txt",
+    "title": "El Nombre del Viento",
+    "cover": "img/el-nombre-del-viento.jpeg"
+  },
+  {
+    "file": "sonia.txt",
+    "title": "Un Animal Salvaje",
+    "cover": "img/un-animal-salvaje.png"
+  }
+]
