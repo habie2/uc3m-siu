@@ -23,10 +23,6 @@ body {
   position: relative;
 }
 
-.logo {
-  font-size: 24px;
-}
-
 .menu-container {
   position: absolute;
   left: 50%;
@@ -129,4 +125,69 @@ body {
 .modo-lectura {
   background-color: #d4cdb7e1;
   color: #4a3828;
+}
+
+/* BOOK SELECTOR */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f1ef;
+}
+
+.books-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  height: 100%;
+  width: 100%;
+}
+
+.books-container {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Espacio entre los libros */
+  padding: 10px;
+  width: 100%;
+  max-width: 1200px; /* Limitar el ancho máximo del contenedor */
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  height: 350px; /* Altura fija para los libros */
+
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.book img {
+  align-items: center;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+}
+
+.book:hover {
+  transform: scale(1.05); /* Aumenta el tamaño del libro al pasar el mouse */
+  transition: transform 0.2s; /* Transición suave */
+}
+
+.book p {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
 }

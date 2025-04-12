@@ -45,16 +45,15 @@ if (window.DeviceOrientationEvent) {
 if (!SpeechRecognition) {
     console.log("La API de reconocimiento de voz no es compatible con este navegador.");
 } else {
+    let recognitionActive = false;
     const recognition = new SpeechRecognition();
     recognition.lang = "es-ES";
     recognition.continuous = true;  // Escucha continua
     recognition.interimResults = false;  // No mostrar resultados intermedios
     recognition.maxAlternatives = 1;  // Solo una alternativa
 
-    // Inicia el reconocimiento de voz
-    recognition.start();
-
     recognition.onresult = (event) => {
+        if (!recognitionActive) return;
         const transcript = event.results[0][0].transcript.trim().toLowerCase();
         console.log("Escuchado:", transcript);
         //resetInactivityTimer(); // a lo mejor debería resetear solo si reconoce alguna acción
@@ -82,8 +81,28 @@ if (!SpeechRecognition) {
     // Si el reconocimiento termina (onend), reiniciamos el reconocimiento
     recognition.onend = () => {
         console.log("Reconocimiento de voz terminado.");
-        recognition.start();  // Reinicia el reconocimiento de voz
+        if (recognitionActive) {
+            recognition.start();  // Reinicia el reconocimiento de voz
+        }
     };
+    document.addEventListener("DOMContentLoaded", function () {
+        const voiceButton = document.getElementById("stop-voice");
+        voiceButton.addEventListener("click", function () {
+            if (recognitionActive) {
+                recognitionActive = false;
+                recognition.stop();
+                voiceButton.classList.remove("active");
+                console.log("Reconocimiento de voz detenido.");
+            } else {
+                recognitionActive = true;
+                recognition.start();
+                voiceButton.classList.add("active");
+                console.log("Reconocimiento de voz activado.");
+
+            }
+            resetInactivityTimer();
+        });
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -105,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const nextButton = document.getElementById("exit-book");
     nextButton.addEventListener("click", function () {
-        socket.emit("next-page");
+        socket.emit("exit-book");
         resetInactivityTimer();
     });
 });
