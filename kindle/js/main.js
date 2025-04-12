@@ -1,5 +1,6 @@
 
-import { nextPage, prevPage, apagarEbook } from "./reader/navigate.js";
+import { apagarEbook } from "./reader/features.js";
+import { nextPage, prevPage } from "./reader/reader.js";
 import { renderBooks } from "./books/books.js";
 
 

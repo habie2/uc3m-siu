@@ -76,27 +76,30 @@ body {
   justify-content: center;
   align-items: center;
 }
+.viewer-container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 100%;
+  gap: 20px;
+}
 .reader-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 90%;
+  height: 100%;
+  width: 100%;
 }
 
 #reader {
-  width: 90%; /* 80% del contenedor padre */
-  height: 80vh; /* 80% de la altura de la ventana del navegador */
-  min-width: 600px; /* Asegura que el ancho no baje de 600px */
-  min-height: 400px; /* Asegura que la altura no baje de 400px */
-  max-height: 80vh; /* Limita la altura máxima a 80% de la ventana */
-  border-radius: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  text-align: justify;
-  white-space: pre-wrap; /* Respeta los saltos de línea y los espacios */
-  font-size: 20px;
-  line-height: 1.5;
-  word-wrap: break-word;
+  width: 80vw;
+  height: calc(100vh - 200px);
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  border-radius: 0.5rem; /* Rounded corners for the viewer */
+  overflow: hidden; /* Hide overflow */
 }
 
 .nav-button {
