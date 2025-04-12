@@ -25,15 +25,27 @@ io.on('connection', (socket) => {
     console.log('Nuevo usuario conectado:', socket.id);
 
     socket.on('next-page', () => {
-        console.log('📲 Enviando evento: next-page');
+        console.log('Enviando evento: next-page');
         io.emit('next-page');
     });
 
     socket.on('prev-page', () => {
+        console.log('Enviando evento: prev-page');
+        io.emit('prev-page');
     });
 
     socket.on('disconnect', () => {
         console.log('Usuario desconectado:', socket.id);
+    });
+
+    socket.on('exit-book', () => {
+        console.log('saliendo del libro:');
+        io.emit('exit-book');
+    });
+
+    socket.on('turn-off', () => {
+        console.log('apagando ebook:');
+        io.emit('turn-off');
     });
 });
 
