@@ -1,0 +1,52 @@
+/* Custom styles */
+body {
+    font-family: 'Inter', sans-serif; /* Use Inter font */
+}
+
+/* Style for the EPUB rendering area */
+#viewer {
+    height: calc(100vh - 180px); /* Adjusted height for button row */
+    width: 100%;
+    max-width: 800px; /* Limit max width for readability */
+    margin: 0 auto; /* Center the viewer */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    border-radius: 0.5rem; /* Rounded corners for the viewer */
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Style for navigation/action buttons */
+/* Usamos clases de Tailwind directamente en HTML, pero definimos la clase base aquí por si acaso o para referencia */
+/* Si no usas un proceso de build de Tailwind, las directivas @apply no funcionarán aquí */
+/* En este caso, las clases de Tailwind se aplican directamente en el HTML, por lo que esta regla puede no ser estrictamente necesaria */
+/* .action-button { ... } */
+/* Estilos para el estado disabled se manejan con clases de Tailwind: disabled:opacity-50 disabled:cursor-not-allowed */
+
+
+/* Style for file input - Se aplica directamente con clases de Tailwind en el HTML */
+/* #file-input { ... } */
+
+
+/* Hide default epub.js arrows if using custom buttons */
+.epub-arrow {
+    display: none !important;
+}
+
+/* Style for highlights - Adding cursor pointer for removal */
+.epub-highlight {
+     mix-blend-mode: multiply;
+     cursor: pointer; /* Indicate clicking is possible */
+     /* fill, fill-opacity se definen en JS al crear el highlight */
+}
+
+/* Style for highlight removal confirmation (optional) */
+.highlight-confirm-dialog {
+     /* Basic styling if needed, but using native confirm() for simplicity */
+}
+
+/* Estilos base para botones (aplicados con Tailwind en HTML) */
+/* Asegúrate de que las clases de Tailwind en index.html definan la apariencia */
+.action-button {
+     /* Tailwind aplica estilos base como bg-blue-500, hover:bg-blue-700, text-white, etc. */
+     /* Este selector es principalmente para referencia o si necesitas añadir overrides */
+}
+
