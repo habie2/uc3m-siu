@@ -1,0 +1,78 @@
+<!-- <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style/lector-epub.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    <script src="js/new-reader/cargarLibro.js"></script>
+
+</head>
+<body class="body">
+
+    <div class="epub-reader">
+        <div id="viewer-container" class="viewer-container">
+            <div id="viewer" class="viewer">
+                <p class="viewer-message">Por favor, selecciona un archivo EPUB para empezar a leer.</p>
+            </div>
+        </div>
+
+        <div id="controls" class="controls">
+            <button id="prev" class="action-button">Anterior</button>
+            <button id="highlight-button" class="action-button">Subrayar Selección</button>
+            <button id="next" class="action-button">Siguiente</button>
+        </div>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cargar EPUB</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+</head>
+<body>
+  <div id="viewer" style="width: 100%; height: 100%;"></div>
+    <div id="controls" class="controls">
+            <button id="prev" class="action-button">Anterior</button>
+            <button id="highlight-button" class="action-button">Subrayar Selección</button>
+            <button id="next" class="action-button">Siguiente</button>
+        </div>
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const filePath = "./js/new-reader/el-nombre-del-viento.epub"; // Ruta local del archivo EPUB
+      const viewer = document.getElementById("viewer");
+
+      fetch(filePath)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error al cargar el archivo: ${response.statusText}`);
+          }
+          return response.arrayBuffer();
+        })
+        .then((arrayBuffer) => {
+          const book = ePub(arrayBuffer); // Usamos ePub.js para renderizar el libro
+          const rendition = book.renderTo("viewer", {
+            width: "100%",
+            height: "100%",
+            flow: "paginated",
+          });
+
+          rendition.display().catch((err) => {
+            console.error("Error al mostrar el libro:", err);
+          });
+        })
+        .catch((error) => {
+          console.error("Error al cargar el archivo EPUB:", error);
+          viewer.innerHTML =
+            '<p class="text-center text-gray-500 p-10">No se pudo cargar el archivo EPUB.</p>';
+        });
+    });
+  </script>
+</body>
+</html>
