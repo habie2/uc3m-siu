@@ -11,12 +11,20 @@
         href="https://fonts.googleapis.com/css2?family=Boldonse&family=Cutive+Mono&family=LXGW+WenKai+Mono+TC&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Sono:wght@200..800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/lector-epub.css">
     <title>Ki..ller</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="js/main.js"></script>
 </head>
 
 <body>
+    <header class="toolbar">
+        <h1 class="boldonse-regular toolbar">Ki..ller</h1>
+        <button id="library-button" class="boldonse-regular toolbar">Biblioteca</button>
+    </header>
+    
     <div id="main-container">
     </div>
 </body>

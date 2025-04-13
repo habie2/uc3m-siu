@@ -1,56 +1,150 @@
 .epub-reader {
-    background-color: #f7fafc;
+    width: 90%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 24px;
-    font-family: sans-serif;
-}
-
-.title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2d3748;
-    margin-bottom: 24px;
-    text-align: center;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .viewer-container {
-    width: 100%;
-    max-width: 768px;
-    margin-bottom: 16px;
+    position: relative; /* Necesario para posicionamiento interno de epubjs */
+    height: 75vh; /* ¡Importante! Dale una altura definida */
+    overflow: hidden; /* Evita barras de scroll inesperadas aquí */
+    border-bottom: 1px solid #ccc;
 }
 
 .viewer {
+    width: 100%;
+    height: 100%;
+     /* Estilos para el mensaje dentro del viewer */
+    display: flex; /* Para centrar el mensaje inicial */
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding: 40px;
-    color: #a0aec0;
 }
 
-.viewer-message {
-    margin: 0;
+/* .viewer-message {
+    padding: 20px;
+    color: #666;
 }
+
+.error-message {
+    color: #D8000C;
+    background-color: #FFD2D2; 
+    border: 1px solid #D8000C;
+    border-radius: 5px;
+}
+ */
 
 .controls {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-    max-width: 400px;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #eee;
 }
 
 .action-button {
-    padding: 8px 16px;
-    background-color: #4299e1;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 8px 15px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    border-radius: 4px;
 }
 
 .action-button:hover {
-    background-color: #3182ce;
+    background-color: #f5f5f5;
+}
+
+.action-button:active {
+    background-color: #ddd;
+}
+
+/* Estilos para colores de fondo */
+.epub-view > iframe {
+    background: white; /* Fondo del libro */
+}
+
+.controls {
+  position: relative; /* O el contenedor que prefieras para posicionar el menú */
+  /* ... otros estilos ... */
+}
+
+.font-control-wrapper {
+    position: relative; /* Necesario para posicionar el menú absolutamente dentro de él */
+    display: inline-block; /* O flex, etc. */
+}
+
+.font-menu {
+  position: absolute;
+  bottom: 100%; /* Posiciona el menú encima del botón */
+  left: 50%;
+  transform: translateX(-50%); /* Centra el menú horizontalmente */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10; /* Asegura que esté por encima del contenido */
+  min-width: 200px; /* Ancho mínimo para que quepa bien */
+  display: none; /* Oculto por defecto (JS lo cambiará) */
+  flex-direction: column; /* Organiza las secciones verticalmente */
+  gap: 8px; /* Espacio entre secciones */
+}
+
+.font-menu.hidden {
+  display: none; /* Asegura que esté oculto */
+}
+
+.font-menu-section {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 5px; /* Espacio entre elementos dentro de la sección */
+}
+
+.font-menu-section span,
+.font-menu-section label {
+    margin-right: 5px;
+}
+
+.font-menu-section button {
+    min-width: 25px; /* Ancho para botones +/- */
+    padding: 2px 5px;
+}
+.font-menu-section select {
+    flex-grow: 1; /* Permite que el select ocupe espacio */
+}
+
+#current-font-size {
+    font-weight: bold;
+    min-width: 45px; /* Espacio para mostrar '100%' etc. */
+    text-align: center;
+}
+
+.font-menu .close-button {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+
+/* Estilos adicionales para los botones de acción si es necesario */
+.action-button {
+  /* ... tus estilos ... */
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+/* Ocultar visualmente la clase 'hidden' si display:none no es suficiente */
+.hidden {
+   /* Podrías añadir !important si tienes conflictos, pero es mejor evitarlo */
+   /* display: none !important; */
 }

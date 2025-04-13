@@ -8,5 +8,15 @@
     "file": "sonia.txt",
     "title": "Un Animal Salvaje",
     "cover": "img/un-animal-salvaje.png"
-  }
+  }, 
+  {
+    "file": "el-nombre-del-viento.epub",
+    "title": "El Nombre del Viento - EPUB",
+    "cover": "img/el-nombre-del-viento.jpeg"
+  }, 
+  {
+    "file": "Manana, y manana, y manana - Gabrielle Zevin.epub",
+    "title": "Mañana y mañana y mañana - EPUB",
+    "cover": "img/mañana-y-mañana-y-mañana.jpg"
+  } 
 ]
