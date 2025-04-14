@@ -1,5 +1,33 @@
-export function addHighlightEvent(rendition) {
-  let seleccionActual = null; 
+import { rendition } from "./renderReader.js";
+
+
+export function applyHighlight(cfiRange) {
+   // Añadido rendition como parámetro
+   if (!rendition || !rendition.annotations || !cfiRange) {
+     console.error("Error: Rendition no lista o CFI inválido para subrayar.");
+     return false;
+   }
+   try {
+     const highlightData = { type: "highlight", timestamp: Date.now() };
+     // Usa el rendition pasado como parámetro
+     rendition.annotations.highlight(
+       cfiRange,
+       highlightData,
+       (e) => {
+         console.log("Clic en subrayado", e);
+       },
+       "highlight-default"
+     );
+     console.log("Subrayado aplicado:", cfiRange);
+     return true;
+   } catch (error) {
+     console.error("Error al aplicar subrayado:", error);
+     return false;
+   }
+ }
+
+export function addHighlightEvent() {
+  let seleccionActual = null;
   const botonAccion = document.getElementById("highlight-button");
 
   rendition.on("selected", (cfiRange, contents) => {
@@ -60,10 +88,9 @@ export function addHighlightEvent(rendition) {
 
         seleccionActual = null;
         botonAccion.disabled = true; // Deshabilitar hasta nueva selección
-
       }
     });
   } else {
     console.error("No se encontró el botón con id 'botonAccionSeleccion'");
-  } 
-} 
+  }
+}

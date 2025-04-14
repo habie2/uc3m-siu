@@ -4,6 +4,7 @@
 // Asegúrate de que las rutas a estos archivos sean correctas desde renderReader.js
 import { applyTranslation } from "./translationUtils.js";
 import { applyNote } from "./noteUtils.js";
+import { applyHighlight } from "./highlightReader.js"; 
 
 // --- Variables Globales/Módulo ---
 export let rendition = null; // El objeto Rendition, exportado si necesita ser accedido globalmente
@@ -23,30 +24,30 @@ let seleccionActual = null; // Guarda la selección actual { cfiRange, texto }
  * @param {string} cfiRange - El rango CFI a subrayar.
  * @returns {boolean} - True si se aplicó, false si hubo un error.
  */
-export function applyHighlight(rendition, cfiRange) {
-  // Añadido rendition como parámetro
-  if (!rendition || !rendition.annotations || !cfiRange) {
-    console.error("Error: Rendition no lista o CFI inválido para subrayar.");
-    return false;
-  }
-  try {
-    const highlightData = { type: "highlight", timestamp: Date.now() };
-    // Usa el rendition pasado como parámetro
-    rendition.annotations.highlight(
-      cfiRange,
-      highlightData,
-      (e) => {
-        console.log("Clic en subrayado", e);
-      },
-      "highlight-default"
-    );
-    console.log("Subrayado aplicado:", cfiRange);
-    return true;
-  } catch (error) {
-    console.error("Error al aplicar subrayado:", error);
-    return false;
-  }
-}
+// export function applyHighlight(rendition, cfiRange) {
+//   // Añadido rendition como parámetro
+//   if (!rendition || !rendition.annotations || !cfiRange) {
+//     console.error("Error: Rendition no lista o CFI inválido para subrayar.");
+//     return false;
+//   }
+//   try {
+//     const highlightData = { type: "highlight", timestamp: Date.now() };
+//     // Usa el rendition pasado como parámetro
+//     rendition.annotations.highlight(
+//       cfiRange,
+//       highlightData,
+//       (e) => {
+//         console.log("Clic en subrayado", e);
+//       },
+//       "highlight-default"
+//     );
+//     console.log("Subrayado aplicado:", cfiRange);
+//     return true;
+//   } catch (error) {
+//     console.error("Error al aplicar subrayado:", error);
+//     return false;
+//   }
+// }
 
 // --- Funciones de Utilidad Internas ---
 
@@ -336,7 +337,7 @@ export function renderReader(epubFilePath) {
         if (seleccionActual?.cfiRange && rendition) {
           // Verificar rendition también
           // Pasa rendition a la función local/importada
-          if (applyHighlight(rendition, seleccionActual.cfiRange)) {
+          if (applyHighlight(seleccionActual.cfiRange)) {
             clearSelection();
           }
         }
@@ -346,7 +347,6 @@ export function renderReader(epubFilePath) {
         if (seleccionActual?.cfiRange && seleccionActual?.texto && rendition) {
           // Pasa rendition a la función importada
           const success = await applyTranslation(
-            rendition,
             seleccionActual.cfiRange,
             seleccionActual.texto
           );
@@ -374,7 +374,7 @@ export function renderReader(epubFilePath) {
           const nota = noteInputText.value.trim();
           if (nota && seleccionActual?.cfiRange && rendition) {
             // Pasa rendition a la función importada
-            if (applyNote(rendition, seleccionActual.cfiRange, nota)) {
+            if (applyNote(seleccionActual.cfiRange, nota)) {
               noteInputContainer.classList.add("hidden");
               clearSelection();
             } else {

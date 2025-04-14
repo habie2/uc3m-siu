@@ -1,4 +1,5 @@
 // translationUtils.js
+import { rendition } from "./renderReader.js";
 
 /**
  * **Simulación** de traducción de Español a Inglés.
@@ -42,7 +43,7 @@ async function _translateText_simulated(text) {
  * @param {string} textToTranslate - El texto original seleccionado.
  * @returns {Promise<boolean>} - True si se aplicó, false si hubo un error.
  */
-export async function applyTranslation(rendition, cfiRange, textToTranslate) {
+export async function applyTranslation(cfiRange, textToTranslate) {
   // Validar parámetros de entrada
   if (!rendition || !rendition.annotations || !cfiRange || !textToTranslate) {
     console.error(

@@ -1,4 +1,4 @@
-// noteUtils.js
+import { rendition } from "./renderReader.js";
 
 /**
  * Aplica una anotación de nota a un rango CFI.
@@ -8,7 +8,7 @@
  * @param {string} noteText - El texto de la nota.
  * @returns {boolean} - True si se aplicó, false si hubo un error.
  */
-export function applyNote(rendition, cfiRange, noteText) {
+export function applyNote(cfiRange, noteText) {
   // Validar parámetros de entrada
   if (!rendition || !rendition.annotations || !cfiRange || !noteText) {
     console.error(
