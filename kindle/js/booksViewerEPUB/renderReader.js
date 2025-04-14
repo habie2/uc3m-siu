@@ -1,4 +1,26 @@
 export let rendition; // Variable global para el objeto ePub Book
+export let currentFontSizePercentage = 100; // Empezamos con el tamaño base
+export const FONT_SIZE_STEP = 10; // Cuánto aumentar/disminuir cada vez (en puntos porcentuales)
+const MAX_FONT_SIZE = 250; // Límite máximo de tamaño
+const MIN_FONT_SIZE = 70; // Límite mínimo de tamaño
+
+import { addHighlightEvent } from "./highlightReader.js";
+
+export function updateFontSize(newFontSize) {
+  
+
+  currentFontSizePercentage = newFontSize;
+  if (rendition) {
+    console.log("Aplicando nuevo tamaño de fuente:", newFontSize, "%");
+    rendition.themes.fontSize(newFontSize + "%"); // Aplica el nuevo tamaño de fuente
+  
+    const mainContainer = document.getElementById("main-container");
+    const currentFontSizeSpan = mainContainer.querySelector("#current-font-size");
+    currentFontSizeSpan.textContent = currentFontSizePercentage + "%";
+  } else {
+    console.warn("Rendition no está lista para cambiar el tamaño de fuente");
+  }
+}
 
 /**
  * Renderiza la interfaz del lector EPUB y carga el libro especificado.
@@ -28,7 +50,7 @@ export function renderReader(epubFilePath) {
         </div>
         <div id="controls" class="controls">
           <button id="prev" class="action-button">Anterior</button>
-          <button id="highlight-button" class="action-button">Subrayar Selección</button>
+          <button id="highlight-button" class="action-button disabled">Subrayar Selección</button>
 
           <div class="font-control-wrapper"> <button id="font-settings-button" class="action-button">Fuente</button>
             <div id="font-menu" class="font-menu hidden"> <div class="font-menu-section">
@@ -68,14 +90,46 @@ export function renderReader(epubFilePath) {
     const fontMenu = mainContainer.querySelector("#font-menu"); // El menú contextual
     const decreaseFontButton = mainContainer.querySelector("#decrease-font");
     const increaseFontButton = mainContainer.querySelector("#increase-font");
-    const currentFontSizeSpan = mainContainer.querySelector("#current-font-size");
     const fontFamilySelect = mainContainer.querySelector("#font-family-select");
     const closeFontMenuButton = mainContainer.querySelector("#close-font-menu");
   
     let book; // Variable para el objeto ePub Book
     let completePath = "./js/epubs/" + epubFilePath; // Ruta completa al archivo EPUB
 
-  // setRenditionInstance(null); // limpia la instancia anterior
+  /** Muestra u oculta el menú de fuentes */
+  function toggleFontMenu(show) {
+    if (show) {
+      fontMenu.classList.remove("hidden");
+      fontMenu.style.display = "block"; // O 'flex', 'grid', etc. según tu CSS
+      // Escuchar clics fuera del menú para cerrarlo
+      document.addEventListener("click", handleClickOutsideMenu, true);
+    } else {
+      fontMenu.classList.add("hidden");
+      fontMenu.style.display = "none";
+      // Dejar de escuchar clics fuera
+      document.removeEventListener("click", handleClickOutsideMenu, true);
+    }
+  }
+
+  /** Manejador para cerrar el menú si se hace clic fuera de él */
+  function handleClickOutsideMenu(event) {
+    // Si el clic NO fue dentro del menú Y NO fue en el botón que lo abre
+    if (
+      !fontMenu.contains(event.target) &&
+      !fontSettingsButton.contains(event.target)
+    ) {
+      toggleFontMenu(false); // Cierra el menú
+    }
+  }
+  function updateFontFamily(newFontFamily) {
+      if (rendition) {
+        console.log("Aplicando nueva fuente:", newFontFamily);
+
+        rendition.themes.font(newFontFamily);
+      } else {
+        console.warn("Rendition no está lista para cambiar la fuente");
+      }
+    };
 
   fetch(completePath) // Usa la ruta del archivo pasado a la función
     .then((response) => {
@@ -85,9 +139,9 @@ export function renderReader(epubFilePath) {
         );
       }
       console.log("Archivo EPUB obtenido, procesando...");
-      console.log("*******Rendition creado y listo para mostrar el libro.");
       return response.arrayBuffer(); // Obtiene el contenido como ArrayBuffer
     })
+      
     .then((arrayBuffer) => {
       book = ePub(arrayBuffer); // Crea el objeto Book de ePub.js
 
@@ -98,10 +152,8 @@ export function renderReader(epubFilePath) {
         flow: "paginated", // "paginated" o "scrolled-doc"
         spread: "none", // Opcional: para vista de dos páginas en pantallas anchas
       });
-      console.log("*******Rendition creado y listo para mostrar el libro.");
-      // setRenditionInstance(rendition); // Establece la instancia de rendition en el módulo de navegación
-
-      // Añade los listeners para los botones *después* de que rendition esté lista
+      
+ 
       prevButton.addEventListener("click", () => {
         if (rendition) {
           console.log("Botón 'Anterior' clickeado.");
@@ -120,64 +172,61 @@ export function renderReader(epubFilePath) {
         }
       });
 
-      let currentFontSizePercentage = 100; // Empezamos asumiendo el 100% inicial
-
-      fontSettingsButton.addEventListener("click", () => {
-        if (rendition) {
-          console.log("Botón 'Aumentar Fuente' clickeado.");
-
-          // 2. Calcula el nuevo porcentaje: Aumenta el actual en un 20%
-          // Multiplicar por 1.20 es lo mismo que añadir el 20%
-          currentFontSizePercentage *= 1.2;
-
-          // Opcional: Redondear para evitar demasiados decimales (puedes ajustar)
-          currentFontSizePercentage = Math.round(currentFontSizePercentage);
-
-          // Opcional: Poner un límite máximo si no quieres que crezca indefinidamente
-          // if (currentFontSizePercentage > 300) { // Ejemplo: Límite del 300%
-          //   currentFontSizePercentage = 300;
-          //   console.log("Tamaño máximo alcanzado.");
-          // }
-
-          // 3. Convierte el nuevo porcentaje a un string para la función
-          const newSizeString = currentFontSizePercentage + "%";
-          console.log("Aplicando nuevo tamaño de fuente:", newSizeString);
-
-          // 4. Aplica el nuevo tamaño de fuente
-          rendition.themes.fontSize(newSizeString);
-        } else {
-          console.warn("Rendition no está lista (font)");
-        }
+      fontSettingsButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Evita que el clic se propague al document y cierre el menú inmediatamente
+        const isHidden = fontMenu.classList.contains("hidden");
+        toggleFontMenu(isHidden); // Si está oculto, muéstralo, y viceversa
+      });
+     
+      closeFontMenuButton.addEventListener("click", () => {
+        toggleFontMenu(false);
       });
 
+      // Botones de tamaño de fuente dentro del menú
+      increaseFontButton.addEventListener("click", () => {
+        updateFontSize(currentFontSizePercentage + FONT_SIZE_STEP);
+      });
+      decreaseFontButton.addEventListener("click", () => {
+        updateFontSize(currentFontSizePercentage - FONT_SIZE_STEP);
+      });
+
+      // Selector de familia de fuentes dentro del menú
+      fontFamilySelect.addEventListener("change", (event) => {
+        updateFontFamily(event.target.value);
+      });
+
+      addHighlightEvent(rendition);
       // Muestra el contenido del libro. Devuelve una promesa.
       return rendition.display();
     })
     .then(() => {
       console.log("Libro mostrado correctamente.");
-      // Puedes añadir listeners a eventos de la rendition aquí si lo necesitas
+      // Aplicar estado inicial de fuente y tamaño al cargar
+      updateFontSize(currentFontSizePercentage); // Aplica el 100% inicial
+      updateFontFamily(fontFamilySelect.value); // Aplica la fuente seleccionada por defecto
+
       rendition.on("relocated", function (location) {
-        console.log("Nueva ubicación:", location.start.cfi);
-        // Aquí podrías actualizar un indicador de progreso o capítulo actual
+        // console.log("Nueva ubicación:", location.start.cfi);
+        // Actualizar UI si es necesario
       });
 
-      // Listener para cuando la selección cambie (útil para depurar)
+      // Listeners de selección (útiles para depurar o para el highlight)
       if (rendition.manager && typeof rendition.manager.on === "function") {
         rendition.manager.on("selected", function (cfiRange, contents) {
-          console.log("Selección cambió (manager event):", cfiRange);
+          // console.log("Selección cambió (manager event):", cfiRange);
         });
       } else if (typeof rendition.on === "function") {
         rendition.on("selected", function (cfiRange, contents) {
-          console.log("Selección cambió (rendition event):", cfiRange);
+          // console.log("Selección cambió (rendition event):", cfiRange);
         });
       }
     })
-    .catch((error) => {
-      // Captura errores de fetch, ePub() o rendition.display()
-      console.error("Error durante la carga o renderizado del EPUB:", error);
-      if (viewer) {
-        // Comprueba si viewer existe antes de modificarlo
-        viewer.innerHTML = `<p class="viewer-message error-message">Error al cargar el libro: <br>${error.message}<br>Revisa la consola para más detalles.</p>`;
-      }
-    });
+    // .catch((error) => {
+    //   // Captura errores de fetch, ePub() o rendition.display()
+    //   console.error("Error durante la carga o renderizado del EPUB:", error);
+    //   if (viewer) {
+    //     // Comprueba si viewer existe antes de modificarlo
+    //     viewer.innerHTML = `<p class="viewer-message error-message">Error al cargar el libro: <br>${error.message}<br>Revisa la consola para más detalles.</p>`;
+    //   }
+    // });
 }

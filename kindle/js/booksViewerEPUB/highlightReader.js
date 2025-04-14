@@ -1,50 +1,71 @@
-highlightButton.addEventListener("click", () => {
-        if (
-          rendition &&
-          rendition.manager &&
-          typeof rendition.manager.getContents === "function"
-        ) {
-          // Obtener la selección del iframe del rendition
-          const contents = rendition.manager.getContents();
-          const selection = contents[0]?.window?.getSelection(); // Accede a la selección dentro del iframe
+export function addHighlightEvent(rendition) {
+  let seleccionActual = null; 
+  const botonAccion = document.getElementById("highlight-button");
 
-          if (selection && !selection.isCollapsed) {
-            const range = selection.getRangeAt(0);
-            try {
-              // Obtener el CFI range de la selección
-              const cfiRange = rendition.CFI(range).toString(); // Utiliza la instancia de rendition para obtener el CFI
-              console.log("Texto seleccionado (CFI):", cfiRange);
+  rendition.on("selected", (cfiRange, contents) => {
+    console.log("Texto seleccionado. Guardando CFI Range:", cfiRange);
 
-              // Añadir el subrayado usando la API de anotaciones
-              rendition.annotations.highlight(
-                cfiRange,
-                {}, // Datos adicionales opcionales
-                (e) => {
-                  // Callback al hacer clic en el subrayado
-                  console.log("Highlight clickeado:", e.target);
-                  // Opcional: añadir lógica para eliminar el subrayado
-                  // rendition.annotations.remove(cfiRange, "highlight");
-                },
-                "hl", // Clase CSS para el subrayado (puedes definirla en tu CSS)
-                {
-                  fill: "yellow",
-                  "fill-opacity": "0.3",
-                  "pointer-events": "auto",
-                } // Estilos SVG
-              );
-              // Limpiar la selección visual después de subrayar
-              selection.removeAllRanges();
-              console.log("Subrayado aplicado.");
-            } catch (err) {
-              console.error("Error al generar CFI o aplicar subrayado:", err);
-              alert("Error al procesar la selección para subrayar.");
-            }
-          } else {
-            alert("Por favor, selecciona texto en el libro para subrayar.");
-          }
-        } else {
-          console.warn(
-            "Rendition o su manager no están listos, o no se pudo acceder a la selección (highlight)."
-          );
+    // Guarda la información necesaria de la selección
+    seleccionActual = {
+      cfiRange: cfiRange,
+      texto: contents.window.getSelection().toString(), // Opcional: guardar el texto
+    };
+
+    // Habilita el botón porque ahora hay una selección válida
+    if (botonAccion) {
+      botonAccion.disabled = false;
+    }
+  });
+
+  // --- Opcional: Manejar si el usuario deselecciona el texto ---
+  // Detectar clics fuera de una selección puede ser complejo.
+  // Una forma simple es deshabilitar el botón si el usuario hace clic
+  // en cualquier lugar DENTRO del iframe del contenido.
+  rendition.on("rendered", (section, view) => {
+    view.document.addEventListener("click", (event) => {
+      // Si el clic NO está sobre una selección existente (o anotación)
+      // podríamos limpiar la selección guardada y deshabilitar el botón.
+      // Esta lógica puede necesitar ajustes finos.
+      if (seleccionActual && !window.getSelection().toString()) {
+        // Comprueba si la selección del navegador está vacía
+        console.log("Clic detectado, limpiando selección guardada.");
+        seleccionActual = null;
+        if (botonAccion) {
+          botonAccion.disabled = true;
         }
-      });
+      }
+    });
+  });
+
+  if (botonAccion) {
+    botonAccion.addEventListener("click", () => {
+      console.log("Botón presionado.");
+
+      if (seleccionActual && seleccionActual.cfiRange) {
+        console.log(
+          "Realizando acción con la selección guardada:",
+          seleccionActual.cfiRange
+        );
+        console.log("Texto asociado:", seleccionActual.texto); // Si lo guardaste
+
+        // Resaltar texto seleccionado
+        rendition.annotations.highlight(
+          seleccionActual.cfiRange,
+          { nota: "Resaltado desde botón" }, // Datos asociados opcionales
+          (e) => {
+            console.log("Clic en el nuevo resaltado", e);
+          }, // Callback opcional
+          "clase-resaltado-boton" // Clase CSS opcional
+        );
+
+        seleccionActual = null;
+        botonAccion.disabled = true; // Deshabilitar hasta nueva selección
+
+        // TODO: Recuerda guardar esta nueva anotación si necesitas persistencia
+        // guardarAnotacionEnStorage({ type: 'highlight', cfiRange: seleccionActual.cfiRange, ... });
+      }
+    });
+  } else {
+    console.error("No se encontró el botón con id 'botonAccionSeleccion'");
+  } 
+} 
