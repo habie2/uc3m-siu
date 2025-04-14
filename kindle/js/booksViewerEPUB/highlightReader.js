@@ -61,8 +61,6 @@ export function addHighlightEvent(rendition) {
         seleccionActual = null;
         botonAccion.disabled = true; // Deshabilitar hasta nueva selección
 
-        // TODO: Recuerda guardar esta nueva anotación si necesitas persistencia
-        // guardarAnotacionEnStorage({ type: 'highlight', cfiRange: seleccionActual.cfiRange, ... });
       }
     });
   } else {

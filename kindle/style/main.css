@@ -235,3 +235,100 @@ body {
   text-align: center;
   color: #333;
 }
+.note-input-container {
+  /* Posicionamiento (ajusta 'bottom' y 'left' según necesites) */
+  position: absolute;
+  /* Posicionado respecto a '.viewer-container' si este es 'position: relative;' */
+  bottom: 65px;
+  /* Distancia desde abajo */
+  left: 50%;
+  transform: translateX(-50%);
+  /* Centrado horizontal */
+  width: 85%;
+  /* Ancho relativo */
+  max-width: 450px;
+  /* Ancho máximo */
+
+  /* Apariencia */
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 12px 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+
+  /* Layout Interno (Input y Botón) */
+  display: flex;
+  align-items: center;
+  /* Centrado vertical */
+  justify-content: space-between;
+  /* Espacio entre input y botón */
+
+  /* Capa */
+  z-index: 1001;
+  /* Asegura que esté por encima del contenido del libro */
+}
+
+/* Estado oculto (controlado por JS añadiendo/quitando esta clase) */
+.note-input-container.hidden {
+  display: none;
+}
+
+/* Campo de texto para escribir la nota */
+#note-input-text {
+  flex-grow: 1;
+  /* Permite que el input ocupe el espacio disponible */
+  margin-right: 10px;
+  /* Espacio entre el input y el botón 'X' */
+
+  /* Apariencia del input */
+  padding: 8px 10px;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px;
+  font-size: 1em;
+  /* O el tamaño que prefieras */
+  color: #333;
+}
+
+/* Estilo opcional para el texto del placeholder */
+#note-input-text::placeholder {
+  color: #888;
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+/* Botón 'X' para cancelar/cerrar */
+#note-input-cancel {
+  /* Dimensiones y forma */
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* Botón redondo */
+
+  /* Apariencia */
+  background-color: #e0e0e0;
+  border: 1px solid #b0b0b0;
+  color: #666;
+  font-size: 14px;
+  /* Tamaño de la 'X' */
+  font-weight: bold;
+  line-height: 22px;
+  /* Centrado vertical de la 'X' */
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+  /* Evita padding extra */
+
+  /* Comportamiento Flex */
+  flex-shrink: 0;
+  /* Evita que se encoja */
+
+  /* Transición suave para el hover */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Estilo del botón 'X' al pasar el ratón por encima */
+#note-input-cancel:hover {
+  background-color: #d0d0d0;
+  color: #333;
+  border-color: #999;
+}
