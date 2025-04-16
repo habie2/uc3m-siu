@@ -74,3 +74,10 @@ button:hover {
 #stop-voice.active svg {
   fill: #333;
 }
+
+#turn-off {
+  position: absolute;
+  top: 10px; /* Espacio desde la parte superior */
+  left: 10px; /* Espacio desde la parte izquierda */
+  z-index: 10; /* Para asegurarse de que se superponga a otros elementos si es necesario */
+}

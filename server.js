@@ -47,6 +47,14 @@ io.on('connection', (socket) => {
         console.log('apagando ebook:');
         io.emit('turn-off');
     });
+    socket.on('que-leo', () => {
+        console.log('buscando que hay que leer en alto:');
+        io.emit('que-leo');
+    });
+    socket.on('texto-leido', (texto) => {
+        console.log('Texto recibido del Kindle:', texto);
+        io.emit('texto-leido', texto); // Reenviar el texto al Phone
+    });
 });
 
 // Iniciar el servidor

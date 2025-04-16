@@ -15,3 +15,15 @@ export function nextPage() {
     console.error("Error: 'rendition' no está definido.");
   }
 }
+
+// Función para mostrarla ysimular el apagado del ebook
+export function apagarEbook() {
+  if (document.documentElement.style.display == "none") {
+    document.documentElement.style.display = "block";
+  }else {
+    document.documentElement.style.display = "none";
+  }
+  
+}
+
+
