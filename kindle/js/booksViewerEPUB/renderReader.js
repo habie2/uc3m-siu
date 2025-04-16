@@ -5,6 +5,7 @@
 import { applyTranslation } from "./translationUtils.js";
 import { applyNote } from "./noteUtils.js";
 import { applyHighlight } from "./highlightReader.js"; 
+//import ePub from "epubjs";
 
 // --- Variables Globales/Módulo ---
 export let rendition = null; // El objeto Rendition, exportado si necesita ser accedido globalmente

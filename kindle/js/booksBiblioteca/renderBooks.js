@@ -57,3 +57,18 @@ export async function renderBooks() {
         console.error(err);
     }
 }
+
+export async function getNextCharacters(rendition, book, numChars = 10000) {
+    const currentLocation = rendition.currentLocation().start;
+    const currentCfi = currentLocation.cfi;
+    const range = await book.getRange(currentCfi, book.spine.spineItems.at(-1).cfiBase); // hasta el final del libro
+  
+    if (!range) return '';
+  
+    // Creamos un contenedor temporal para acceder al texto plano
+    const container = document.createElement('div');
+    container.appendChild(range.cloneContents());
+  
+    const fullText = container.textContent || container.innerText || '';
+    return fullText.slice(0, numChars);
+  }
