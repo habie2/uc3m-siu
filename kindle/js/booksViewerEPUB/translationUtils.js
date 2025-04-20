@@ -8,32 +8,45 @@ import { rendition } from "./renderReader.js";
  * @param {string} text - Texto en español a traducir.
  * @returns {Promise<string>} - Promesa que resuelve con el texto "traducido" (simulado).
  */
-async function _translateText_simulated(text) {
-  console.log(`Simulando traducción ES -> EN para: "${text}"`);
-  // --- Bloque de Implementación REAL (necesita API Key, etc.) ---
-  /*
-    const apiKey = 'TU_CLAVE_DE_API_AQUI';
-    const sourceLang = 'es';
-    const targetLang = 'en';
-    const apiUrl = `URL_API?key=${apiKey}&source=${sourceLang}&target=${targetLang}&q=${encodeURIComponent(text)}`;
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`Error API: ${response.statusText}`);
-        const data = await response.json();
-        const translatedText = data.translations?.[0]?.text || 'Error al extraer';
-        return translatedText;
-    } catch (error) {
-        console.error("Error durante la traducción real:", error);
-        return `[Error Traduciendo: ${text}]`;
+async function _translateText_google(text) {
+  const key = 'AIzaSyAVC7h0NPd_Unkq3Z2OwcG9Fzxl91-67YQ'; // ← Reemplaza con tu clave real
+  const apiUrl = `https://translation.googleapis.com/language/translate/v2`;
+
+  const payload = {
+    q: text,
+    source: 'es',
+    target: 'en',
+    format: 'text'
+  };
+
+  try {
+    const response = await fetch(`${apiUrl}?key=${key}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error API: ${response.statusText}`);
     }
-    */
-  // --- Simulación Actual ---
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(`[Simulated EN]: ${text}`);
-    }, 500);
-  });
+
+    const data = await response.json();
+    const translatedText = data.data.translations[0].translatedText;
+    return translatedText;
+  } catch (error) {
+    console.error("Error durante la traducción real:", error);
+    return `[Error Traduciendo: ${text}]`;
+  }
 }
+
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve(`[Simulated EN]: ${text}`);
+  //   }, 500);
+  // });
+//}
 
 /**
  * Traduce texto (simulado) y aplica una anotación de traducción a un rango CFI.
@@ -55,7 +68,7 @@ export async function applyTranslation(cfiRange, textToTranslate) {
 
   try {
     // Llama a la función (simulada) de traducción
-    const traduccion = await _translateText_simulated(textToTranslate);
+    const traduccion = await _translateText_google(textToTranslate);
 
     // Datos que se asociarán a la anotación
     const translationData = {
