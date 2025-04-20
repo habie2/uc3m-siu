@@ -332,3 +332,141 @@ body {
   color: #333;
   border-color: #999;
 }
+/* --- Night Mode Styles --- */
+
+body.night-mode {
+  background-color: #121212;
+  /* Un fondo oscuro estándar */
+  color: #e0e0e0;
+  /* Texto claro por defecto */
+}
+
+/* Ajusta la toolbar para el modo noche */
+body.night-mode .toolbar {
+  background-color: #1f1f1f;
+  /* Un gris un poco más oscuro */
+  color: #e0e0e0;
+  border-bottom: 1px solid #333;
+  /* Opcional: un borde sutil */
+}
+
+/* Ajusta el botón de la biblioteca */
+body.night-mode #library-button {
+  background-color: #333;
+  /* Fondo más oscuro para el botón */
+  color: #e0e0e0;
+  /* Texto claro */
+  border: 1px solid #555;
+  /* Borde opcional */
+}
+
+body.night-mode #library-button:hover {
+  background-color: #444;
+  /* Un hover ligeramente más claro */
+}
+
+/* Ajusta el icono de Google en modo noche */
+body.night-mode .google-icon {
+  color: #b0b0b0;
+  /* Un gris más claro para el icono por defecto */
+}
+
+body.night-mode .google-icon:not(.filled):hover {
+  color: #ffffff;
+  /* Blanco al hacer hover sobre el icono no rellenado */
+}
+
+/* Si usas el estado 'filled', asegúrate que contraste bien */
+body.night-mode .google-icon.filled {
+  color: #8ab4f8;
+  /* Un azul claro de Google para modo noche */
+}
+
+body.night-mode .google-icon.filled:hover {
+  color: #aecbfa;
+  /* Un azul más claro al hacer hover */
+}
+
+
+/* Ajusta el contenedor principal si es necesario */
+body.night-mode #main-container {
+  background-color: #121212;
+  /* Asegura que el fondo principal sea oscuro */
+}
+
+/* Ajusta el selector de libros */
+body.night-mode .books-selector {
+  /* Puede que no necesite cambios si hereda del body */
+}
+
+/* Ajusta la apariencia de cada libro */
+body.night-mode .book {
+  background-color: #2a2a2a;
+  /* Fondo para cada tarjeta de libro */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  /* Sombra más oscura o diferente */
+  border: 1px solid #444;
+  /* Borde opcional */
+}
+
+body.night-mode .book p {
+  color: #d0d0d0;
+  /* Color del título del libro */
+}
+
+body.night-mode .book:hover {
+  border-color: #666;
+  /* transform: scale(1.05); ya existe, se mantiene */
+}
+
+/* Ajusta el input de notas */
+body.night-mode .note-input-container {
+  background-color: #2c2c2c;
+  border: 1px solid #555555;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.night-mode #note-input-text {
+  background-color: #3a3a3a;
+  border: 1px solid #666666;
+  color: #e0e0e0;
+  /* Texto claro en el input */
+}
+
+body.night-mode #note-input-text::placeholder {
+  color: #999;
+  /* Placeholder más claro */
+}
+
+body.night-mode #note-input-cancel {
+  background-color: #555;
+  border: 1px solid #777;
+  color: #ccc;
+}
+
+body.night-mode #note-input-cancel:hover {
+  background-color: #666;
+  color: #fff;
+  border-color: #888;
+}
+
+/* --- Integración con tus clases de modo lectura --- */
+
+/* Cuando el body está en night-mode, aplica también los estilos de .modo-noche al lector */
+body.night-mode #reader {
+  background-color: #1e1e1e;
+  /* Coincide con tu .modo-noche */
+  color: #ffffff;
+  /* Coincide con tu .modo-noche */
+  /* Puedes añadir más estilos específicos si es necesario */
+}
+
+/* Opcional: Si quieres que el modo lectura también se adapte */
+body.night-mode #reader.modo-lectura {
+  /* Define cómo se ve el modo lectura DENTRO del modo noche */
+  /* Podrías querer un sepia más oscuro, por ejemplo */
+  background-color: #3a3228;
+  /* Un sepia oscuro */
+  color: #c4b8a8;
+  /* Texto claro sobre sepia oscuro */
+}
