@@ -34,7 +34,8 @@ export function applyNote(cfiRange, noteText) {
         // Acceder a los datos directamente a través de la clausura
         alert(`Nota: ${noteData.note}`);
       },
-      "note-highlight" // Clase CSS específica
+      undefined, 
+      {"fill": "red"}, 
     );
 
     console.log("Anotación de nota añadida:", cfiRange);

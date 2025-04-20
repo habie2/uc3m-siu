@@ -16,7 +16,8 @@ export function applyHighlight(cfiRange) {
        (e) => {
          console.log("Clic en subrayado", e);
        },
-       "highlight-default"
+       undefined,
+       { "fill": "blue" }
      );
      console.log("Subrayado aplicado:", cfiRange);
      return true;
