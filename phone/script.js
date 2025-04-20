@@ -115,6 +115,19 @@ if (!SpeechRecognition) {
       console.log("Comando: leer en voz alta");
       resetInactivityTimer();
       socket.emit("que-leo");
+    } else if (
+      transcript.includes("para de leer") ||
+      transcript.includes("tu callao") ||
+      transcript.includes("callaita") ||
+      transcript.includes("callate") ||
+      transcript.includes("para") ||
+      transcript.includes("para de leer")
+    ) {
+      console.log("Comando: parar de leer en voz alta");
+      resetInactivityTimer();
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
     } else {
       console.log("Comando no reconocido:", transcript);
     }
@@ -166,7 +179,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const nextButton = document.getElementById("prev-page");
   nextButton.addEventListener("click", function () {
     socket.emit("prev-page");
-    socket.emit("que-leo");
     resetInactivityTimer();
   });
 });
