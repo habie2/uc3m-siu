@@ -19,7 +19,7 @@ body {
 }
 h1 {
   font-size: 4rem;
-  margin-bottom: 8rem;
+  margin-bottom: 1rem;
 }
 
 .buttons-container {
@@ -57,6 +57,10 @@ button svg {
   height: 5rem;
   fill: rgb(221, 221, 221);
 }
+#turn-off svg {
+  width: 3rem;
+  height: 3rem;
+}
 
 #exit-book svg {
   fill: rgb(210, 175, 48);
@@ -82,22 +86,18 @@ button:hover {
   z-index: 10; /* Para asegurarse de que se superponga a otros elementos si es necesario */
 }
 
- #trackpad {
-   width: 80vw;
-   /* Ocupa el 80% del ancho de la pantalla */
-   height: 50vh;
-   /* Ocupa el 50% del alto de la pantalla */
-   background-color: #f0f0f0;
-   border: 2px solid #ccc;
-   margin: 20px auto;
-   /* Centrado con margen */
-   cursor: pointer;
-   touch-action: none;
-   /* Evita acciones por defecto del navegador como scroll */
-   user-select: none;
-   /* Evita seleccionar texto al arrastrar */
-   -webkit-user-select: none;
-   -ms-user-select: none;
-   position: relative;
-   /* Para posible feedback visual */
- }
+#trackpad {
+  width: 80vw;
+  height: 50vh;
+  margin: 10px auto;
+  border-radius: 10px;
+  border: rgb(221, 221, 221) dotted 2px;
+  background-color: #747474;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  /* Evita seleccionar texto al arrastrar */
+  /* -webkit-user-select: none;
+  -ms-user-select: none; */
+  position: relative;
+}

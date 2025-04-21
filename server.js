@@ -47,29 +47,47 @@ io.on('connection', (socket) => {
         console.log('apagando ebook:');
         io.emit('turn-off');
     });
-    
+
     socket.on('que-leo', () => {
         console.log('buscando que hay que leer en alto:');
         io.emit('que-leo');
     });
-    
+
     socket.on('texto-leido', (texto) => {
         console.log('Texto recibido del Kindle:', texto);
         io.emit('texto-leido', texto); // Reenviar el texto al Phone
     });
 
     socket.on("pointer-move", (data) => {
-      // 'data' debería contener la información del movimiento, ej: { deltaX: 5, deltaY: -2 }
-      console.log("Recibido pointer-move:", data);
-      // Reenviar solo a los otros clientes (al 'kindle')
-      socket.broadcast.emit("pointer-move", data);
+        // 'data' debería contener la información del movimiento, ej: { deltaX: 5, deltaY: -2 }
+        console.log("Recibido pointer-move:", data);
+        // Reenviar solo a los otros clientes (al 'kindle')
+        socket.broadcast.emit("pointer-move", data);
     });
 
     socket.on("pointer-click", () => {
-      console.log("Recibido pointer-click");
-      // Reenviar solo a los otros clientes (al 'kindle')
-      socket.broadcast.emit("pointer-click");
+        console.log("Recibido pointer-click");
+        // Reenviar solo a los otros clientes (al 'kindle')
+        socket.broadcast.emit("pointer-click");
     });
+
+    socket.on("start-selecting-text", (data) => {
+        console.log("Recibido start-selecting-text:", data);
+        socket.broadcast.emit("start-selecting-text", data);
+    });
+
+    socket.on("move-selecting-text", (data) => {
+        console.log("Recibido move-selecting-text:", data);
+        socket.broadcast.emit("move-selecting-text", data);
+    });
+
+    socket.on("end-selecting-text", (data) => {
+        console.log("Recibido end-selecting-text:", data);
+        socket.broadcast.emit("end-selecting-text", data);
+    });
+
+
+
 
 });
 

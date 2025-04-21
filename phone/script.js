@@ -10,9 +10,9 @@ const inactivityThreshold = 180000; // 30000 = 30 segundos, cambiar cuando funci
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  socket.on("texto-leido", (texto) => {
-    setTimeout(() => leerParrafos(texto), 0);
-  });
+socket.on("texto-leido", (texto) => {
+  setTimeout(() => leerParrafos(texto), 0);
+});
 
 if (window.DeviceOrientationEvent) {
   window.addEventListener(
@@ -195,12 +195,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const nextButton = document.getElementById("turn-off");
-    nextButton.addEventListener("click", function () {
-      socket.emit("turn-off");
-      resetInactivityTimer();
-    });
+  const nextButton = document.getElementById("turn-off");
+  nextButton.addEventListener("click", function () {
+    socket.emit("turn-off");
+    resetInactivityTimer();
   });
+});
 
 
 setInterval(() => {
@@ -219,19 +219,19 @@ function resetInactivityTimer() {
 }
 
 function leerParrafos(parrafos) {
-    if (typeof parrafos !== "string" || !parrafos.trim()) {
-      console.warn("Texto inválido para leer en voz alta:", parrafos);
-      return;
-    }
-  
-    const textoLimpio = parrafos.replace(/\s+/g, ' ').trim(); // quita saltos y excesos de espacio
-  
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-    }
-  
-    yapping(textoLimpio);
+  if (typeof parrafos !== "string" || !parrafos.trim()) {
+    console.warn("Texto inválido para leer en voz alta:", parrafos);
+    return;
   }
+
+  const textoLimpio = parrafos.replace(/\s+/g, ' ').trim(); // quita saltos y excesos de espacio
+
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+  }
+
+  yapping(textoLimpio);
+}
 
 function pausarLectura() {
   if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
@@ -252,128 +252,105 @@ function detenerLectura() {
 }
 
 function yapping(texto) {
-    if (speechSynthesis.speaking || speechSynthesis.pending) {
-      console.log("Speech synthesis está ocupado, esperando...");
-      speechSynthesis.cancel();  // Forzar cancelación si está en proceso
-    }
-    const mensaje = new SpeechSynthesisUtterance(texto.slice(0, 2000));
-    mensaje.lang = "es-ES";
-    mensaje.rate = 1;
-    window.speechSynthesis.speak(mensaje);
+  if (speechSynthesis.speaking || speechSynthesis.pending) {
+    console.log("Speech synthesis está ocupado, esperando...");
+    speechSynthesis.cancel();  // Forzar cancelación si está en proceso
   }
-  
+  const mensaje = new SpeechSynthesisUtterance(texto.slice(0, 2000));
+  mensaje.lang = "es-ES";
+  mensaje.rate = 1;
+  window.speechSynthesis.speak(mensaje);
+}
+
 const trackpad = document.getElementById("trackpad");
+
 let isDragging = false;
-let lastX = 0;
-let lastY = 0;
+let isSelecting = false;
+let startTime = 0;
+let longPressTimer = null;
+let startX = 0;
+let startY = 0;
+let pointerX = 0;
+let pointerY = 0;
+let hasMoved = false;
 
 if (trackpad) {
-  // --- Eventos Táctiles (para móviles/tablets) ---
-  trackpad.addEventListener(
-    "touchstart",
-    (e) => {
-      // Prevenir comportamiento por defecto (scroll, zoom)
-      e.preventDefault();
-      isDragging = true;
-      // Usar el primer punto de contacto
-      const touch = e.touches[0];
-      lastX = touch.clientX;
-      lastY = touch.clientY;
-      // Podrías añadir un feedback visual aquí (cambiar color de fondo, etc.)
-      trackpad.style.backgroundColor = "#e0e0e0";
-    },
-    { passive: false }
-  ); // Necesario { passive: false } para poder usar preventDefault
+  trackpad.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    pointerX = startX;
+    pointerY = startY;
+    startTime = Date.now();
+    isDragging = false;
+    isSelecting = false;
+    hasMoved = false; // Reiniciar el estado de movimiento
 
-  trackpad.addEventListener(
-    "touchmove",
-    (e) => {
-      e.preventDefault();
-      if (!isDragging) return;
-
-      const touch = e.touches[0];
-      const currentX = touch.clientX;
-      const currentY = touch.clientY;
-
-      const deltaX = currentX - lastX;
-      const deltaY = currentY - lastY;
-
-      // Enviar el movimiento relativo (delta)
-      if (deltaX !== 0 || deltaY !== 0) {
-        console.log(`Enviando pointer-move: dx=${deltaX}, dy=${deltaY}`);
-        socket.emit("pointer-move", { deltaX, deltaY });
+    // Inicia temporizador para long press
+    longPressTimer = setTimeout(() => {
+      if (!hasMoved) {
+        isSelecting = true;
+        console.log("Modo selección activado (long press)");
+        // Aquí podrías emitir la selección si es necesario
+        socket.emit("start-selecting-text", { x: pointerX, y: pointerY });
       }
+    }, 500); // 500ms para long press
+  });
 
-      lastX = currentX;
-      lastY = currentY;
-    },
-    { passive: false }
-  );
+  trackpad.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    const dx = touch.clientX - pointerX;
+    const dy = touch.clientY - pointerY;
+
+    const totalMove = Math.hypot(dx, dy); // Distancia total movida
+
+    if (totalMove > 10) {
+      // Si se mueve más de 10px, se marca como que el dedo se movió
+      hasMoved = true;
+      console.log("El dedo se ha movido, desactivando long press.");
+    }
+
+    pointerX = touch.clientX;
+    pointerY = touch.clientY;
+
+    if (isSelecting) {
+      // Emitir las coordenadas del puntero para selección de texto
+      console.log(`Seleccionando texto en: dx=${dx}, dy=${dy}`);
+      socket.emit("move-selecting-text", { x: pointerX, y: pointerY });
+
+      // Si lo necesitas, puedes incluir una lógica para actualizar el rango de selección
+    } else {
+      // Mover puntero virtual
+      console.log(`Moviendo puntero virtual: dx=${dx}, dy=${dy}`);
+      socket.emit("pointer-move", { x: dx, y: dy });
+    }
+  });
 
   trackpad.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    if (isDragging) {
-      isDragging = false;
-      // Considerar un 'touchend' sin movimiento previo como un click
-      // (Podrías añadir lógica para medir tiempo o distancia si quieres ser más preciso)
-      console.log("Enviando pointer-click (desde touchend)");
-      socket.emit("pointer-click");
-      trackpad.style.backgroundColor = "#f0f0f0"; // Restaurar color
-    }
-  });
+    clearTimeout(longPressTimer);
+    const duration = Date.now() - startTime;
 
-  trackpad.addEventListener("touchcancel", (e) => {
-    // Si el toque se cancela (ej: llamada entrante)
+    if (!isDragging && duration < 500 && !hasMoved) {
+      console.log("Click corto detectado");
+      socket.emit("pointer-click", { x: pointerX, y: pointerY });
+    }
+    if (isSelecting) {
+      console.log("Finalizando selección de texto");
+      socket.emit("end-selecting-text", { x: pointerX, y: pointerY });
+    }
+
+
     isDragging = false;
-    trackpad.style.backgroundColor = "#f0f0f0";
+    isSelecting = false;
   });
 
-  // --- Eventos de Ratón (para pruebas en PC o si se usa con ratón) ---
-  trackpad.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    lastX = e.clientX;
-    lastY = e.clientY;
-    trackpad.style.backgroundColor = "#e0e0e0";
-    // Prevenir selección de texto al arrastrar
-    e.preventDefault();
+  trackpad.addEventListener("touchcancel", () => {
+    clearTimeout(longPressTimer);
+    isDragging = false;
+    isSelecting = false;
   });
 
-  trackpad.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-
-    const currentX = e.clientX;
-    const currentY = e.clientY;
-    const deltaX = currentX - lastX;
-    const deltaY = currentY - lastY;
-
-    if (deltaX !== 0 || deltaY !== 0) {
-      console.log(`Enviando pointer-move: dx=${deltaX}, dy=${deltaY}`);
-      socket.emit("pointer-move", { deltaX, deltaY });
-    }
-
-    lastX = currentX;
-    lastY = currentY;
-  });
-
-  // Detectar clic y soltar fuera/dentro
-  document.addEventListener("mouseup", (e) => {
-    // Escuchar en document para capturar si sueltas fuera
-    if (isDragging) {
-      isDragging = false;
-      trackpad.style.backgroundColor = "#f0f0f0";
-    }
-  });
-
-  trackpad.addEventListener("click", (e) => {
-    // El evento 'click' se dispara después de 'mouseup' si no hubo mucho movimiento
-    // Si ya manejaste el click en 'touchend', podrías querer evitar doble envío
-    // O simplemente usar 'click' para el ratón y 'touchend' (con lógica de no-movimiento) para táctil.
-    // Por simplicidad ahora, también enviamos en click (útil para ratón).
-    console.log("Enviando pointer-click (desde click)");
-    socket.emit("pointer-click");
-  });
-
-  // Evitar que el menú contextual aparezca con clic derecho en el trackpad
+  // Opcional: prevenir el menú de contexto
   trackpad.addEventListener("contextmenu", (e) => e.preventDefault());
 } else {
   console.error("Elemento #trackpad no encontrado.");

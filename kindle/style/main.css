@@ -7,28 +7,20 @@
 }
 
 .google-icon {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-size: 48px;
   cursor: pointer;
   color: #9aa0a6;
   transition: color 0.3s ease, font-variation-settings 0.3s ease;
 
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
 .google-icon.filled {
-  color: #4285F4;
+  color: #4285f4;
   /* Color de Google (o el que prefieras para el estado activo) */
   /* Cambiamos FILL a 1 para que se rellene */
-  font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
 .google-icon:not(.filled):hover {
@@ -386,7 +378,6 @@ body.night-mode .google-icon.filled:hover {
   color: #aecbfa;
   /* Un azul más claro al hacer hover */
 }
-
 
 /* Ajusta el contenedor principal si es necesario */
 body.night-mode #main-container {
