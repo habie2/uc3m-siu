@@ -261,3 +261,120 @@ function yapping(texto) {
     mensaje.rate = 1;
     window.speechSynthesis.speak(mensaje);
   }
+  
+const trackpad = document.getElementById("trackpad");
+let isDragging = false;
+let lastX = 0;
+let lastY = 0;
+
+if (trackpad) {
+  // --- Eventos Táctiles (para móviles/tablets) ---
+  trackpad.addEventListener(
+    "touchstart",
+    (e) => {
+      // Prevenir comportamiento por defecto (scroll, zoom)
+      e.preventDefault();
+      isDragging = true;
+      // Usar el primer punto de contacto
+      const touch = e.touches[0];
+      lastX = touch.clientX;
+      lastY = touch.clientY;
+      // Podrías añadir un feedback visual aquí (cambiar color de fondo, etc.)
+      trackpad.style.backgroundColor = "#e0e0e0";
+    },
+    { passive: false }
+  ); // Necesario { passive: false } para poder usar preventDefault
+
+  trackpad.addEventListener(
+    "touchmove",
+    (e) => {
+      e.preventDefault();
+      if (!isDragging) return;
+
+      const touch = e.touches[0];
+      const currentX = touch.clientX;
+      const currentY = touch.clientY;
+
+      const deltaX = currentX - lastX;
+      const deltaY = currentY - lastY;
+
+      // Enviar el movimiento relativo (delta)
+      if (deltaX !== 0 || deltaY !== 0) {
+        console.log(`Enviando pointer-move: dx=${deltaX}, dy=${deltaY}`);
+        socket.emit("pointer-move", { deltaX, deltaY });
+      }
+
+      lastX = currentX;
+      lastY = currentY;
+    },
+    { passive: false }
+  );
+
+  trackpad.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    if (isDragging) {
+      isDragging = false;
+      // Considerar un 'touchend' sin movimiento previo como un click
+      // (Podrías añadir lógica para medir tiempo o distancia si quieres ser más preciso)
+      console.log("Enviando pointer-click (desde touchend)");
+      socket.emit("pointer-click");
+      trackpad.style.backgroundColor = "#f0f0f0"; // Restaurar color
+    }
+  });
+
+  trackpad.addEventListener("touchcancel", (e) => {
+    // Si el toque se cancela (ej: llamada entrante)
+    isDragging = false;
+    trackpad.style.backgroundColor = "#f0f0f0";
+  });
+
+  // --- Eventos de Ratón (para pruebas en PC o si se usa con ratón) ---
+  trackpad.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    trackpad.style.backgroundColor = "#e0e0e0";
+    // Prevenir selección de texto al arrastrar
+    e.preventDefault();
+  });
+
+  trackpad.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+
+    const currentX = e.clientX;
+    const currentY = e.clientY;
+    const deltaX = currentX - lastX;
+    const deltaY = currentY - lastY;
+
+    if (deltaX !== 0 || deltaY !== 0) {
+      console.log(`Enviando pointer-move: dx=${deltaX}, dy=${deltaY}`);
+      socket.emit("pointer-move", { deltaX, deltaY });
+    }
+
+    lastX = currentX;
+    lastY = currentY;
+  });
+
+  // Detectar clic y soltar fuera/dentro
+  document.addEventListener("mouseup", (e) => {
+    // Escuchar en document para capturar si sueltas fuera
+    if (isDragging) {
+      isDragging = false;
+      trackpad.style.backgroundColor = "#f0f0f0";
+    }
+  });
+
+  trackpad.addEventListener("click", (e) => {
+    // El evento 'click' se dispara después de 'mouseup' si no hubo mucho movimiento
+    // Si ya manejaste el click en 'touchend', podrías querer evitar doble envío
+    // O simplemente usar 'click' para el ratón y 'touchend' (con lógica de no-movimiento) para táctil.
+    // Por simplicidad ahora, también enviamos en click (útil para ratón).
+    console.log("Enviando pointer-click (desde click)");
+    socket.emit("pointer-click");
+  });
+
+  // Evitar que el menú contextual aparezca con clic derecho en el trackpad
+  trackpad.addEventListener("contextmenu", (e) => e.preventDefault());
+} else {
+  console.error("Elemento #trackpad no encontrado.");
+}

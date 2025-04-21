@@ -470,3 +470,34 @@ body.night-mode #reader.modo-lectura {
   color: #c4b8a8;
   /* Texto claro sobre sepia oscuro */
 }
+
+#pointer {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  /* Centrar el origen visual del puntero */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* El puntero no debe interceptar eventos del ratón/táctiles */
+  z-index: 9999;
+  /* Asegurar que esté por encima de otros elementos */
+  transition: background-color 0.1s ease, transform 0.1s ease;
+  /* Transición suave para el clic */
+  /* Posición inicial (será actualizada por JS) */
+  left: 50%;
+  top: 50%;
+}
+
+#pointer.clicked {
+  background-color: blue;
+  transform: translate(-50%, -50%) scale(1.3);
+  /* Efecto visual al hacer clic */
+}
+
+/* Estilos para tu contenido (páginas del libro, etc.) */
+#content {
+  /* Tus estilos aquí */
+  padding: 20px;
+}
