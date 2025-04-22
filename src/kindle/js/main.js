@@ -1,7 +1,6 @@
 import { renderBooks } from "./booksBiblioteca/renderBooks.js";
 import { prevPage, nextPage, apagarEbook } from "./booksViewerEPUB/bookNav.js";
 import { leerParrafos } from "./booksViewerEPUB/OutloudReader.js";
-import { rendition } from "./booksViewerEPUB/renderReader.js";
 
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -32,6 +31,7 @@ if (pointer) {
 
   // Listener para mover el puntero
   socket.on("pointer-move", (data) => {
+    pointer.style.display = "block";
     // console.log('Recibido pointer-move:', data);
     pointerX += data.x;
     pointerY += data.y;
@@ -52,6 +52,7 @@ if (pointer) {
   // Listener para el clic
   socket.on("pointer-click", () => {
     console.log("Recibido pointer-click en:", pointerX, pointerY);
+    pointer.style.display = "block";
 
 
     pointer.classList.add("clicked");
