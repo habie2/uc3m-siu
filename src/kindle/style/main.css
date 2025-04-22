@@ -1,0 +1,495 @@
+@import url("font.css");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.google-icon {
+  font-family: "Material Symbols Outlined";
+  font-size: 48px;
+  cursor: pointer;
+  color: #9aa0a6;
+  transition: color 0.3s ease, font-variation-settings 0.3s ease;
+
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+.google-icon.filled {
+  color: #4285f4;
+  /* Color de Google (o el que prefieras para el estado activo) */
+  /* Cambiamos FILL a 1 para que se rellene */
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+.google-icon:not(.filled):hover {
+  color: #bdc1c6;
+}
+
+.google-icon.filled:hover {
+  color: #1a73e8;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f1f1ef;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3d3d3d;
+  color: white;
+  padding: 10px 20px;
+  position: relative;
+}
+
+#library-button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#library-button:hover {
+  background-color: #1f1f1f;
+}
+
+.menu-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.menu-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  transform: translateX(-50%);
+  top: 40px;
+  min-width: 200px;
+  padding: 10px;
+}
+
+.dropdown h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.dropdown div {
+  margin-bottom: 10px;
+}
+
+.dropdown button {
+  display: block;
+  margin: 2px;
+  padding: 5px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.menu-container:hover .dropdown {
+  display: block;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+}
+
+#reader {
+  width: 90%; /* 80% del contenedor padre */
+  height: 80vh; /* 80% de la altura de la ventana del navegador */
+  min-width: 600px; /* Asegura que el ancho no baje de 600px */
+  min-height: 400px; /* Asegura que la altura no baje de 400px */
+  max-height: 80vh; /* Limita la altura máxima a 80% de la ventana */
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: justify;
+  white-space: pre-wrap; /* Respeta los saltos de línea y los espacios */
+  font-size: 20px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.nav-button {
+  background-color: #333;
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: #555;
+}
+
+.modo-dia {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.modo-noche {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.modo-lectura {
+  background-color: #d4cdb7e1;
+  color: #4a3828;
+}
+
+/* BOOK SELECTOR */
+#main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f1ef;
+  margin-top: 2rem;
+}
+
+.books-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  height: 100%;
+  width: 100%;
+}
+
+.books-container {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Espacio entre los libros */
+  padding: 10px;
+  width: 100%;
+  max-width: 1200px; /* Limitar el ancho máximo del contenedor */
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  height: 350px; /* Altura fija para los libros */
+
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.book img {
+  align-items: center;
+  max-width: 100%;
+  max-height: 80%;
+  border-radius: 10px;
+}
+
+.book:hover {
+  transform: scale(1.05); /* Aumenta el tamaño del libro al pasar el mouse */
+  transition: transform 0.2s; /* Transición suave */
+}
+
+.book p {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+.note-input-container {
+  /* Posicionamiento (ajusta 'bottom' y 'left' según necesites) */
+  position: absolute;
+  /* Posicionado respecto a '.viewer-container' si este es 'position: relative;' */
+  bottom: 65px;
+  /* Distancia desde abajo */
+  left: 50%;
+  transform: translateX(-50%);
+  /* Centrado horizontal */
+  width: 85%;
+  /* Ancho relativo */
+  max-width: 450px;
+  /* Ancho máximo */
+
+  /* Apariencia */
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 12px 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+
+  /* Layout Interno (Input y Botón) */
+  display: flex;
+  align-items: center;
+  /* Centrado vertical */
+  justify-content: space-between;
+  /* Espacio entre input y botón */
+
+  /* Capa */
+  z-index: 1001;
+  /* Asegura que esté por encima del contenido del libro */
+}
+
+/* Estado oculto (controlado por JS añadiendo/quitando esta clase) */
+.note-input-container.hidden {
+  display: none;
+}
+
+/* Campo de texto para escribir la nota */
+#note-input-text {
+  flex-grow: 1;
+  /* Permite que el input ocupe el espacio disponible */
+  margin-right: 10px;
+  /* Espacio entre el input y el botón 'X' */
+
+  /* Apariencia del input */
+  padding: 8px 10px;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px;
+  font-size: 1em;
+  /* O el tamaño que prefieras */
+  color: #333;
+}
+
+/* Estilo opcional para el texto del placeholder */
+#note-input-text::placeholder {
+  color: #888;
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+/* Botón 'X' para cancelar/cerrar */
+#note-input-cancel {
+  /* Dimensiones y forma */
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* Botón redondo */
+
+  /* Apariencia */
+  background-color: #e0e0e0;
+  border: 1px solid #b0b0b0;
+  color: #666;
+  font-size: 14px;
+  /* Tamaño de la 'X' */
+  font-weight: bold;
+  line-height: 22px;
+  /* Centrado vertical de la 'X' */
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+  /* Evita padding extra */
+
+  /* Comportamiento Flex */
+  flex-shrink: 0;
+  /* Evita que se encoja */
+
+  /* Transición suave para el hover */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Estilo del botón 'X' al pasar el ratón por encima */
+#note-input-cancel:hover {
+  background-color: #d0d0d0;
+  color: #333;
+  border-color: #999;
+}
+/* --- Night Mode Styles --- */
+
+body.night-mode {
+  background-color: #121212;
+  /* Un fondo oscuro estándar */
+  color: #e0e0e0;
+  /* Texto claro por defecto */
+}
+
+/* Ajusta la toolbar para el modo noche */
+body.night-mode .toolbar {
+  background-color: #1f1f1f;
+  /* Un gris un poco más oscuro */
+  color: #e0e0e0;
+  border-bottom: 1px solid #333;
+  /* Opcional: un borde sutil */
+}
+
+/* Ajusta el botón de la biblioteca */
+body.night-mode #library-button {
+  background-color: #333;
+  /* Fondo más oscuro para el botón */
+  color: #e0e0e0;
+  /* Texto claro */
+  border: 1px solid #555;
+  /* Borde opcional */
+}
+
+body.night-mode #library-button:hover {
+  background-color: #444;
+  /* Un hover ligeramente más claro */
+}
+
+/* Ajusta el icono de Google en modo noche */
+body.night-mode .google-icon {
+  color: #b0b0b0;
+  /* Un gris más claro para el icono por defecto */
+}
+
+body.night-mode .google-icon:not(.filled):hover {
+  color: #ffffff;
+  /* Blanco al hacer hover sobre el icono no rellenado */
+}
+
+/* Si usas el estado 'filled', asegúrate que contraste bien */
+body.night-mode .google-icon.filled {
+  color: #8ab4f8;
+  /* Un azul claro de Google para modo noche */
+}
+
+body.night-mode .google-icon.filled:hover {
+  color: #aecbfa;
+  /* Un azul más claro al hacer hover */
+}
+
+/* Ajusta el contenedor principal si es necesario */
+body.night-mode #main-container {
+  background-color: #121212;
+  /* Asegura que el fondo principal sea oscuro */
+}
+
+/* Ajusta el selector de libros */
+body.night-mode .books-selector {
+  /* Puede que no necesite cambios si hereda del body */
+}
+
+/* Ajusta la apariencia de cada libro */
+body.night-mode .book {
+  background-color: #2a2a2a;
+  /* Fondo para cada tarjeta de libro */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  /* Sombra más oscura o diferente */
+  border: 1px solid #444;
+  /* Borde opcional */
+}
+
+body.night-mode .book p {
+  color: #d0d0d0;
+  /* Color del título del libro */
+}
+
+body.night-mode .book:hover {
+  border-color: #666;
+  /* transform: scale(1.05); ya existe, se mantiene */
+}
+
+/* Ajusta el input de notas */
+body.night-mode .note-input-container {
+  background-color: #2c2c2c;
+  border: 1px solid #555555;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.night-mode #note-input-text {
+  background-color: #3a3a3a;
+  border: 1px solid #666666;
+  color: #e0e0e0;
+  /* Texto claro en el input */
+}
+
+body.night-mode #note-input-text::placeholder {
+  color: #999;
+  /* Placeholder más claro */
+}
+
+body.night-mode #note-input-cancel {
+  background-color: #555;
+  border: 1px solid #777;
+  color: #ccc;
+}
+
+body.night-mode #note-input-cancel:hover {
+  background-color: #666;
+  color: #fff;
+  border-color: #888;
+}
+
+/* --- Integración con tus clases de modo lectura --- */
+
+/* Cuando el body está en night-mode, aplica también los estilos de .modo-noche al lector */
+body.night-mode #reader {
+  background-color: #1e1e1e;
+  /* Coincide con tu .modo-noche */
+  color: #ffffff;
+  /* Coincide con tu .modo-noche */
+  /* Puedes añadir más estilos específicos si es necesario */
+}
+
+/* Opcional: Si quieres que el modo lectura también se adapte */
+body.night-mode #reader.modo-lectura {
+  /* Define cómo se ve el modo lectura DENTRO del modo noche */
+  /* Podrías querer un sepia más oscuro, por ejemplo */
+  background-color: #3a3228;
+  /* Un sepia oscuro */
+  color: #c4b8a8;
+  /* Texto claro sobre sepia oscuro */
+}
+
+#pointer {
+  display: none;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  /* Centrar el origen visual del puntero */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* El puntero no debe interceptar eventos del ratón/táctiles */
+  z-index: 9999;
+  /* Asegurar que esté por encima de otros elementos */
+  transition: background-color 0.1s ease, transform 0.1s ease;
+  /* Transición suave para el clic */
+  /* Posición inicial (será actualizada por JS) */
+  left: 50%;
+  top: 50%;
+}
+
+#pointer.clicked {
+  background-color: rgb(74, 102, 255);
+  transform: translate(-50%, -50%) scale(1.3);
+  /* Efecto visual al hacer clic */
+}
+
+/* Estilos para tu contenido (páginas del libro, etc.) */
+#content {
+  /* Tus estilos aquí */
+  padding: 20px;
+}
