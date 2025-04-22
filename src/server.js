@@ -1,10 +1,16 @@
 const express = require('express');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const path = require('path');
 const socketIo = require('socket.io');
 
+const options = {
+    key: fs.readFileSync('certificados/Killer.key'),
+    cert: fs.readFileSync('certificados/Killer.crt'),
+};
+
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(options, app);
 const io = socketIo(server);
 
 // Servir archivos estáticos
@@ -19,7 +25,7 @@ app.get('/phone', (req, res) => {
 app.get('/kindle', (req, res) => {
     res.sendFile(path.join(__dirname, 'kindle/index.html'));
 });
-// TODO: APRENDER A USAR IO O SI ES NECESARIO QUE NI IDEA
+
 // Manejo de conexiones de Socket.IO
 io.on('connection', (socket) => {
     console.log('Nuevo usuario conectado:', socket.id);
