@@ -19,4 +19,4 @@ Este proyecto sincroniza un Kindle con una control remoto en el móvil.
 node server.js
 ```
 
-3. La interfaz kindle se encontrará en http://localhost:3000/kindle/ y la interfaz del móvil en http://localhost:3000/phone/
+3. La interfaz kindle se encontrará en https://localhost:3000/kindle/ y la interfaz del móvil en https://localhost:3000/phone/
