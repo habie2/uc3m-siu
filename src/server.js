@@ -81,24 +81,20 @@ io.on('connection', (socket) => {
         socket.broadcast.emit("pointer-click");
     });
 
-    socket.on("start-selecting-text", (data) => {
-        console.log("Recibido start-selecting-text:", data);
-        socket.broadcast.emit("start-selecting-text", data);
-    });
+    // socket.on("start-selecting-text", (data) => {
+    //     console.log("Recibido start-selecting-text:", data);
+    //     socket.broadcast.emit("start-selecting-text", data);
+    // });
 
-    socket.on("move-selecting-text", (data) => {
-        console.log("Recibido move-selecting-text:", data);
-        socket.broadcast.emit("move-selecting-text", data);
-    });
+    // socket.on("move-selecting-text", (data) => {
+    //     console.log("Recibido move-selecting-text:", data);
+    //     socket.broadcast.emit("move-selecting-text", data);
+    // });
 
-    socket.on("end-selecting-text", (data) => {
-        console.log("Recibido end-selecting-text:", data);
-        socket.broadcast.emit("end-selecting-text", data);
-    });
-
-
-
-
+    // socket.on("end-selecting-text", (data) => {
+    //     console.log("Recibido end-selecting-text:", data);
+    //     socket.broadcast.emit("end-selecting-text", data);
+    // });
 });
 
 // Iniciar el servidor
