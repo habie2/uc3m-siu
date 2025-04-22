@@ -118,6 +118,16 @@ if (!SpeechRecognition) {
     ) {
       console.log("Comando: leer en voz alta");
       socket.emit("que-leo");
+    } else if (
+      transcript.includes("para de leer") ||
+      transcript.includes("tu callao") ||
+      transcript.includes("callaita") ||
+      transcript.includes("callate") ||
+      transcript.includes("para") ||
+      transcript.includes("para de leer")) {
+      console.log("Comando: parar de leer en voz alta");
+      resetInactivityTimer();
+      detenerLectura();
     } else {
       console.log("Comando no reconocido:", transcript);
     }
