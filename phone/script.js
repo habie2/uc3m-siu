@@ -292,7 +292,7 @@ if (trackpad) {
         isSelecting = true;
         console.log("Modo selección activado (long press)");
         // Aquí podrías emitir la selección si es necesario
-        socket.emit("start-selecting-text", { x: pointerX, y: pointerY });
+        // socket.emit("start-selecting-text", { x: pointerX, y: pointerY });
       }
     }, 500); // 500ms para long press
   });
@@ -316,7 +316,7 @@ if (trackpad) {
     if (isSelecting) {
       // Emitir las coordenadas del puntero para selección de texto
       console.log(`Seleccionando texto en: dx=${dx}, dy=${dy}`);
-      socket.emit("move-selecting-text", { x: pointerX, y: pointerY });
+      // socket.emit("move-selecting-text", { x: pointerX, y: pointerY }); // NOT WORKING PROPERLY
 
       // Si lo necesitas, puedes incluir una lógica para actualizar el rango de selección
     } else {
@@ -336,7 +336,7 @@ if (trackpad) {
     }
     if (isSelecting) {
       console.log("Finalizando selección de texto");
-      socket.emit("end-selecting-text", { x: pointerX, y: pointerY });
+      // socket.emit("end-selecting-text", { x: pointerX, y: pointerY });
     }
 
 

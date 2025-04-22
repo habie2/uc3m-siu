@@ -4,9 +4,6 @@ import { leerParrafos } from "./booksViewerEPUB/OutloudReader.js";
 import { rendition } from "./booksViewerEPUB/renderReader.js";
 
 window.addEventListener("DOMContentLoaded", () => {
-  const libraryView = document.getElementById("library-view");
-  const viewerView = document.getElementById("viewer-view");
-  const bookLinks = document.querySelectorAll(".book-link");
 
   // añadimos evento al boton de biblioteca (como si fuera un boton HOME de la wii)
   const libraryButton = document.getElementById("library-button");
@@ -22,8 +19,6 @@ window.addEventListener("DOMContentLoaded", () => {
 const socket = io();
 
 const pointer = document.getElementById("pointer");
-const contentArea = document.body; // O un contenedor específico si lo prefieres
-
 let pointerX = window.innerWidth / 2; // Posición inicial X (centro)
 let pointerY = window.innerHeight / 2; // Posición inicial Y (centro)
 
@@ -55,22 +50,19 @@ if (pointer) {
   socket.on("pointer-click", () => {
     console.log("Recibido pointer-click en:", pointerX, pointerY);
 
-    // 1. Efecto visual en el puntero
+
     pointer.classList.add("clicked");
     setTimeout(() => {
       pointer.classList.remove("clicked");
     }, 150); // Duración del efecto visual
 
-    // 2. Simular un clic en el elemento que está debajo del puntero
-    // Ocultar temporalmente el puntero para hacer el elementFromPoint correctamente
     pointer.style.display = "none";
     const elementUnderPointer = document.elementFromPoint(pointerX, pointerY);
-    // Volver a mostrar el puntero
+
     pointer.style.display = "";
 
     if (elementUnderPointer) {
       console.log("Elemento debajo del puntero:", elementUnderPointer);
-      // Simular un evento de clic en ese elemento
       const clickEvent = new MouseEvent("click", {
         bubbles: true,
         cancelable: true,
@@ -81,11 +73,7 @@ if (pointer) {
       elementUnderPointer.dispatchEvent(clickEvent);
       console.log("Evento click simulado en:", elementUnderPointer);
 
-      // Si el elemento es un enlace '<a>', podrías querer navegar
-      // if (elementUnderPointer.tagName === 'A' && elementUnderPointer.href) {
-      //    window.location.href = elementUnderPointer.href;
-      // }
-      // Si es un botón <button>, el dispatchEvent debería ser suficiente
+
     } else {
       console.log("No hay elemento interactivo debajo del puntero.");
     }
@@ -96,7 +84,7 @@ if (pointer) {
   const simulateMouseEventInIframe = (type, x, y) => {
     const iframe = document.querySelector("iframe[id^='epubjs-view']");
     if (!iframe) {
-      console.warn("❌ Iframe EPUB no encontrado.");
+      console.warn("Iframe EPUB no encontrado.");
       return;
     }
 
@@ -106,7 +94,7 @@ if (pointer) {
 
     // Verificar si las coordenadas están dentro del área visible del iframe
     if (insideX < 0 || insideX > rect.width || insideY < 0 || insideY > rect.height) {
-      console.warn(`⚠️ Coordenadas (${x}, ${y}) fuera del área visible del iframe.`);
+      console.warn(`Coordenadas (${x}, ${y}) fuera del área visible del iframe.`);
       return;
     }
 
@@ -114,7 +102,7 @@ if (pointer) {
     const iframeDoc = iframe.contentDocument || iframeWindow.document;
 
     if (!iframeDoc || !iframeDoc.elementFromPoint) {
-      console.warn("❌ No se pudo acceder al documento del iframe.");
+      console.warn("No se pudo acceder al documento del iframe.");
       return;
     }
 
@@ -130,9 +118,9 @@ if (pointer) {
       });
 
       target.dispatchEvent(event);
-      console.log(`✅ Evento ${type} simulado dentro del iframe en`, target);
+      console.log(`Evento ${type} simulado dentro del iframe en`, target);
     } else {
-      console.warn(`⚠️ No se encontró ningún elemento en (${insideX}, ${insideY}) dentro del iframe.`);
+      console.warn(`No se encontró ningún elemento en (${insideX}, ${insideY}) dentro del iframe.`);
     }
   };
 
@@ -184,16 +172,15 @@ if (pointer) {
       const selectedText = selection.toString().trim();
 
       if (selectedText) {
-        console.log("📌 Texto seleccionado:", selectedText);
+        console.log("Texto seleccionado:", selectedText);
         // socket.emit("selected-text", selectedText); // Puedes enviar el texto aquí
       } else {
-        console.warn("📭 La selección está vacía.");
+        console.warn("La selección está vacía.");
       }
     } else {
-      console.warn("❌ getSelection() no está disponible en el documento del iframe.");
+      console.warn("getSelection() no está disponible en el documento del iframe.");
     }
   });
-
 
 } else {
   console.error("Elemento #pointer no encontrado.");
@@ -227,8 +214,4 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Texto leído:", texto);
     socket.emit("texto-leido", texto);
   });
-
-
-
-
 });

@@ -4,9 +4,9 @@ import { renderReader } from "../booksViewerEPUB/renderReader.js";
    * Adjunta addEventListener("click") a cada elemento de libro.
    */
 function attachBookClickListeners() {
-  document.querySelectorAll(".book").forEach((el) => {
-    el.addEventListener("click", handleBookClick);
-  });
+    document.querySelectorAll(".book").forEach((el) => {
+        el.addEventListener("click", handleBookClick);
+    });
 }
 
 /**
@@ -14,9 +14,9 @@ function attachBookClickListeners() {
  * @param {Event} event - El objeto evento click.
  */
 function handleBookClick(event) {
-    const bookElement = event.currentTarget; 
+    const bookElement = event.currentTarget;
     const file = bookElement.getAttribute('data-file');
-    console.log("Cargando libro:", file);
+    console.log("Charging book:", file);
 
     renderReader(file); // renderizamos el libro seleccionado
 }
@@ -24,7 +24,6 @@ function handleBookClick(event) {
 export async function renderBooks() {
     const container = document.getElementById("main-container");
     try {
-        // List of books to be displayed
         const res = await fetch("./js/epubs/books-config.json");
         const books = await res.json();
         container.innerHTML = `
@@ -41,7 +40,7 @@ export async function renderBooks() {
             </div>
         </div>
         `;
-        attachBookClickListeners(); // Attach listeners to the books after rendering
+        attachBookClickListeners();
 
     } catch (err) {
         container.innerHTML = `<p>Error cargando libros.</p>`;

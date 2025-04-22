@@ -16,6 +16,7 @@ body {
   background-color: #333;
   text-align: center;
   color: rgb(221, 221, 221);
+  overflow-y: hidden;
 }
 h1 {
   font-size: 4rem;
