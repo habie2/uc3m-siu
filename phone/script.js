@@ -5,17 +5,19 @@ let lastBeta = null;
 let lastActionTime = 0;
 let lastVerticalActionTime = 0;
 let lastInteractionTime = Date.now();
-const inactivityThreshold = 180000; // 30000 = 30 segundos, cambiar cuando funcione a 3min o algo así
+const inactivityThreshold = 300000; // 30000 = 30 segundos, cambiar cuando funcione a 3min o algo así
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 socket.on("texto-leido", (texto) => {
   setTimeout(() => leerParrafos(texto), 0);
+  resetInactivityTimer();
 });
 
 socket.on("pausar-lectura", () => {
   detenerLectura();
+  resetInactivityTimer();
 });
 
 if (window.DeviceOrientationEvent) {
@@ -89,14 +91,12 @@ if (!SpeechRecognition) {
     if (!recognitionActive) return;
     const transcript = event.results[0][0].transcript.trim().toLowerCase();
     console.log("Escuchado:", transcript);
-    //resetInactivityTimer(); // debería resetear solo si reconoce alguna acción por si la persona ronca o algo así
     if (
       transcript.includes("pasa") ||
       transcript.includes("siguiente") ||
       transcript.includes("next")
     ) {
       console.log("Comando: pasa");
-      resetInactivityTimer();
       socket.emit("next-page"); // Emitir evento de página siguiente al servidor
     } else if (
       transcript.includes("vuelve") ||
@@ -105,7 +105,6 @@ if (!SpeechRecognition) {
       transcript.includes("prebio")
     ) {
       console.log("Comando: vuelve");
-      resetInactivityTimer();
       socket.emit("prev-page");
       // Emitir evento de página anterior al servidor
     } else if (
@@ -118,11 +117,11 @@ if (!SpeechRecognition) {
       transcript.includes("leer en voz alta")
     ) {
       console.log("Comando: leer en voz alta");
-      resetInactivityTimer();
       socket.emit("que-leo");
     } else {
       console.log("Comando no reconocido:", transcript);
     }
+    resetInactivityTimer();
   };
 
   recognition.onerror = (event) => {
@@ -196,8 +195,14 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Voz desbloqueada por interacción");
   };
 
-  document.addEventListener("click", desbloquearVoz);
-  document.addEventListener("touchstart", desbloquearVoz);
+  document.addEventListener = ("click"), () => {
+    desbloquearVoz();
+    resetInactivityTimer();
+  };
+  document.addEventListener("touchstart"), () => {
+    desbloquearVoz();
+    resetInactivityTimer();
+  };
 });
 
 document.addEventListener("DOMContentLoaded", function () {
