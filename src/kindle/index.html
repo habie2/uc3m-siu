@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Boldonse&family=Cutive+Mono&family=LXGW+WenKai+Mono+TC&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Sono:wght@200..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/lector-epub.css">
+    <link rel="icon" href="assets/ki-logo.png">
+    <title>Ki..ller</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/eventosGenericos/moonIcon.js"></script>
+    <script src="js/nightMode.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/booksViewerEPUB/highlightReader.js"></script>
+
+    <!-- google font icons -->
+     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+</head>
+
+<body>
+    <header class="toolbar">
+        <h1 class="boldonse-regular toolbar">Ki..ller</h1>
+        <button id="library-button" class="boldonse-regular toolbar">Biblioteca</button>
+        <span class="material-symbols-outlined google-icon" id="interactiveGoogleIcon">dark_mode</span>
+    </header>
+    <div id="pointer"></div>
+    <div id="main-container">
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ki..ler</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Boldonse&amp;family=Cutive+Mono&amp;family=LXGW+WenKai+Mono+TC&amp;family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&amp;family=Sono:wght@200..800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js" defer=""></script>
+</head>
+
+<body>
+     <button class="boldonse-regular" id="turn-off">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path
+                d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-84 31.5-156.5T197-763l56 56q-44 44-68.5 102T160-480q0 134 93 227t227 93q134 0 227-93t93-227q0-67-24.5-125T707-707l56-56q54 54 85.5 126.5T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-40-360v-440h80v440h-80Z" />
+        </svg>
+    </button>
+    <h1 class="boldonse-regular">Ki..ller</h1>
+    <div id="trackpad"></div>
+    <div class="buttons-container">
+        <button class="boldonse-regular" id="exit-book"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"></path>
+            </svg></button>
+        <div class="change-page-container">
+
+            <button class="boldonse-regular" id="prev-page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"></path>
+                </svg></button>
+            <button class="boldonse-regular" id="next-page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"></path>
+                </svg></button>
+        </div>
+        <button class="boldonse-regular" id="stop-voice"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm0-240Zm-40 520v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Zm40-360q17 0 28.5-11.5T520-520v-240q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760v240q0 17 11.5 28.5T480-480Z"></path>
+            </svg></button>
+    </div>
+    
+
+
+</body>
+</html>
