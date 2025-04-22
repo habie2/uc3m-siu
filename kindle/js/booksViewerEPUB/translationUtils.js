@@ -2,14 +2,12 @@
 import { rendition } from "./renderReader.js";
 
 /**
- * **Simulación** de traducción de Español a Inglés.
- * Reemplazar con llamada a API real para funcionalidad completa.
- * @private // Indicamos que es una función de ayuda interna a este módulo
+ * Función para traducir texto de Español a Inglés con Google API.
  * @param {string} text - Texto en español a traducir.
  * @returns {Promise<string>} - Promesa que resuelve con el texto "traducido" (simulado).
  */
 async function _translateText_google(text) {
-  const key = 'AIzaSyAVC7h0NPd_Unkq3Z2OwcG9Fzxl91-67YQ'; // ← Reemplaza con tu clave real
+  const key = 'AIzaSyAVC7h0NPd_Unkq3Z2OwcG9Fzxl91-67YQ'; 
   const apiUrl = `https://translation.googleapis.com/language/translate/v2`;
 
   const payload = {
@@ -41,13 +39,6 @@ async function _translateText_google(text) {
   }
 }
 
-  // return new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve(`[Simulated EN]: ${text}`);
-  //   }, 500);
-  // });
-//}
-
 /**
  * Traduce texto (simulado) y aplica una anotación de traducción a un rango CFI.
  * @export // Asegúrate de exportar la función principal
@@ -57,7 +48,6 @@ async function _translateText_google(text) {
  * @returns {Promise<boolean>} - True si se aplicó, false si hubo un error.
  */
 export async function applyTranslation(cfiRange, textToTranslate) {
-  // Validar parámetros de entrada
   if (!rendition || !rendition.annotations || !cfiRange || !textToTranslate) {
     console.error(
       "Error: Faltan datos (Rendition, CFI o Texto) para traducir."
@@ -67,38 +57,31 @@ export async function applyTranslation(cfiRange, textToTranslate) {
   console.log("Iniciando traducción para:", textToTranslate);
 
   try {
-    // Llama a la función (simulada) de traducción
     const traduccion = await _translateText_google(textToTranslate);
 
-    // Datos que se asociarán a la anotación
     const translationData = {
       type: "translation",
       original: textToTranslate,
       translation: traduccion,
     };
 
-    // Usar el objeto rendition pasado como parámetro
     rendition.annotations.highlight(
       cfiRange,
       translationData,
       (e) => {
-        // Callback al hacer clic
         console.log("Clic en traducción", e);
-        // Acceder a los datos directamente a través de la clausura
         alert(
           `Original: ${translationData.original}\nTraducción: ${translationData.translation}`
         );
       },
-      "translation-highlight" // Clase CSS específica
+      "translation-highlight" 
     );
 
     console.log("Anotación de traducción añadida:", cfiRange);
-    return true; // Éxito
+    return true; 
   } catch (error) {
     console.error("Error al traducir o aplicar anotación:", error);
-    // No mostramos alert aquí, dejamos que el llamador decida
-    return false; // Falla
+    return false; 
   }
 }
 
-// Puedes añadir más funciones relacionadas con traducción aquí si es necesario

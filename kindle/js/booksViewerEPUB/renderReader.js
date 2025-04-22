@@ -1,56 +1,15 @@
-// renderReader.js
-// import ePub from "epubjs";
-// --- IMPORTACIONES ---
-// Asegúrate de que las rutas a estos archivos sean correctas desde renderReader.js
 import { applyTranslation } from "./translationUtils.js";
 import { applyNote } from "./noteUtils.js";
 import { applyHighlight } from "./highlightReader.js"; 
-//import ePub from "epubjs";
 
-// --- Variables Globales/Módulo ---
-export let rendition = null; // El objeto Rendition, exportado si necesita ser accedido globalmente
+export let rendition = null;
 export let currentFontSizePercentage = 100;
 export const FONT_SIZE_STEP = 10;
 const MAX_FONT_SIZE = 250;
 const MIN_FONT_SIZE = 70;
 
-let book = null; // El objeto Book de ePub.js
-let seleccionActual = null; // Guarda la selección actual { cfiRange, texto }
-
-// --- Función ApplyHighlight (Definida localmente o importada) ---
-// Por consistencia, la modificamos para aceptar rendition también, aunque la usemos localmente
-/**
- * Aplica un subrayado estándar a un rango CFI.
- * @param {object} rendition - El objeto Rendition de ePub.js.
- * @param {string} cfiRange - El rango CFI a subrayar.
- * @returns {boolean} - True si se aplicó, false si hubo un error.
- */
-// export function applyHighlight(rendition, cfiRange) {
-//   // Añadido rendition como parámetro
-//   if (!rendition || !rendition.annotations || !cfiRange) {
-//     console.error("Error: Rendition no lista o CFI inválido para subrayar.");
-//     return false;
-//   }
-//   try {
-//     const highlightData = { type: "highlight", timestamp: Date.now() };
-//     // Usa el rendition pasado como parámetro
-//     rendition.annotations.highlight(
-//       cfiRange,
-//       highlightData,
-//       (e) => {
-//         console.log("Clic en subrayado", e);
-//       },
-//       "highlight-default"
-//     );
-//     console.log("Subrayado aplicado:", cfiRange);
-//     return true;
-//   } catch (error) {
-//     console.error("Error al aplicar subrayado:", error);
-//     return false;
-//   }
-// }
-
-// --- Funciones de Utilidad Internas ---
+let book = null; 
+let seleccionActual = null; 
 
 function updateFontSize(newFontSize) {
   currentFontSizePercentage = Math.max(
@@ -76,7 +35,6 @@ function updateFontFamily(newFontFamily) {
   }
 }
 
-
 /**
  * Manejador para cerrar el menú de fuentes si se hace clic fuera de él.
  * @param {Event} event - El evento de clic.
@@ -86,12 +44,12 @@ function handleClickOutsideMenu(event) {
     const fontSettingsButton = document.getElementById("font-settings-button");
     // Si el menú existe y el clic NO fue dentro del menú Y NO fue en el botón que lo abre
     if (fontMenu && fontSettingsButton &&
-        !fontMenu.classList.contains('hidden') && // Solo actuar si el menú está visible
+        !fontMenu.classList.contains('hidden') && // Solo actuar si está abierto
         !fontMenu.contains(event.target) &&
         !fontSettingsButton.contains(event.target))
     {
         console.log("Clic fuera del menú de fuente, cerrando.");
-        toggleFontMenu(false); // Cierra el menú
+        toggleFontMenu(false); // Cierra menú
     }
 }
 
@@ -102,7 +60,6 @@ function handleClickOutsideMenu(event) {
  */
 function toggleFontMenu(show) {
     const fontMenu = document.getElementById("font-menu");
-    // No necesitamos el botón aquí, solo el menú
     if (!fontMenu) {
         console.error("Elemento #font-menu no encontrado");
         return;
@@ -111,9 +68,8 @@ function toggleFontMenu(show) {
     if (show) {
         console.log("Mostrando menú de fuente");
         fontMenu.classList.remove("hidden");
-        fontMenu.style.display = "block"; // O 'flex', 'grid' según tu CSS
-        // Escuchar clics fuera del menú para cerrarlo (usando 'true' para fase de captura)
-        // Se registra DESPUÉS del clic actual para evitar cierre inmediato
+        fontMenu.style.display = "block"; 
+        // Escuchar clics fuera del menú para cerrarlo 
         setTimeout(() => {
              document.addEventListener("click", handleClickOutsideMenu, true);
              console.log("Listener para clic fuera AÑADIDO");
@@ -121,14 +77,11 @@ function toggleFontMenu(show) {
     } else {
         console.log("Ocultando menú de fuente");
         fontMenu.classList.add("hidden");
-        fontMenu.style.display = "none"; // Ocultar explícitamente
-        // Dejar de escuchar clics fuera
+        fontMenu.style.display = "none"; 
         document.removeEventListener("click", handleClickOutsideMenu, true);
         console.log("Listener para clic fuera ELIMINADO");
     }
 }
-
-// function handleClickOutsideMenu(event) { ... } // Implementar si es necesario
 
 function toggleActionButtons(enable) {
   const highlightButton = document.getElementById("highlight-button");
@@ -152,8 +105,6 @@ function clearSelection() {
   }
 }
 
-// --- Renderizador Principal ---
-
 /**
  * Renderiza la interfaz del lector EPUB y carga el libro especificado.
  * @param {string} epubFilePath - La ruta RELATIVA al archivo .epub (ej: 'mi-libro.epub').
@@ -164,7 +115,7 @@ export function renderReader(epubFilePath) {
     console.error("Error: No se encontró el div #main-container.");
     return;
   }
-  mainContainer.innerHTML = ""; // Limpiar contenedor
+  mainContainer.innerHTML = "";
 
   const availableFonts = [
     "Arial",
@@ -174,7 +125,7 @@ export function renderReader(epubFilePath) {
     "sans-serif",
     "serif",
   ];
-  const basePath = "./js/epubs/"; // Define la ruta base a tus epubs
+  const basePath = "./js/epubs/"; 
   const completePath = basePath + epubFilePath;
 
   // HTML del lector
@@ -243,7 +194,6 @@ export function renderReader(epubFilePath) {
   const noteInputText = mainContainer.querySelector("#note-input-text");
   const noteInputCancel = mainContainer.querySelector("#note-input-cancel");
 
-  // --- Carga y Renderizado del EPUB ---
   fetch(completePath)
     .then((response) => {
       if (!response.ok) {
@@ -257,20 +207,17 @@ export function renderReader(epubFilePath) {
     .then((arrayBuffer) => {
       book = ePub(arrayBuffer);
       rendition = book.renderTo("viewer", {
-        // Asigna a la variable 'rendition' del módulo
         width: "100%",
         height: "100%",
-        flow: "paginated", // O "scrolled-doc"
-        manager: "continuous", // Recomendado para selección precisa
-        spread: "none", // O "auto"
-        allowScriptedContent: true, // Puede ser necesario
+        flow: "paginated", 
+        manager: "continuous",
+        spread: "none", 
+        allowScriptedContent: true, 
       });
 
-      // --- Event Listeners para Controles ---
       prevButton.addEventListener("click", () => rendition?.prev());
       nextButton.addEventListener("click", () => rendition?.next());
 
-      // Fuente
       fontSettingsButton.addEventListener("click", (event) => {
         event.stopPropagation();
         toggleFontMenu(fontMenu.classList.contains("hidden"));
@@ -288,7 +235,6 @@ export function renderReader(epubFilePath) {
         updateFontFamily(event.target.value)
       );
 
-      // --- Lógica de Selección ---
       rendition.on("selected", (cfiRange, contents) => {
         const textoSeleccionado = contents.window
           .getSelection()
@@ -298,16 +244,13 @@ export function renderReader(epubFilePath) {
           console.log("Seleccionado:", textoSeleccionado);
           seleccionActual = { cfiRange, texto: textoSeleccionado };
           toggleActionButtons(true);
-          noteInputContainer.classList.add("hidden"); // Ocultar input nota si se selecciona otra cosa
+          noteInputContainer.classList.add("hidden"); 
         }
-        // Considerar si se debe llamar a clearSelection() si !textoSeleccionado
       });
 
       rendition.on("rendered", (section, view) => {
-        // Limpiar selección al hacer clic fuera del texto seleccionado
         view.document.addEventListener("click", (event) => {
           setTimeout(() => {
-            // Dar tiempo a que se procese una posible nueva selección
             const currentSelection = view.window
               .getSelection()
               ?.toString()
@@ -321,7 +264,6 @@ export function renderReader(epubFilePath) {
             }
           }, 50);
         });
-        // Cerrar input de nota con Escape
         view.document.addEventListener("keydown", (event) => {
           if (
             event.key === "Escape" &&
@@ -333,11 +275,8 @@ export function renderReader(epubFilePath) {
         });
       });
 
-      // --- Listeners para Botones de Acción ---
       highlightButton.addEventListener("click", () => {
         if (seleccionActual?.cfiRange && rendition) {
-          // Verificar rendition también
-          // Pasa rendition a la función local/importada
           if (applyHighlight(seleccionActual.cfiRange)) {
             clearSelection();
           }
@@ -346,7 +285,6 @@ export function renderReader(epubFilePath) {
 
       translateButton.addEventListener("click", async () => {
         if (seleccionActual?.cfiRange && seleccionActual?.texto && rendition) {
-          // Pasa rendition a la función importada
           const success = await applyTranslation(
             seleccionActual.cfiRange,
             seleccionActual.texto
@@ -354,7 +292,7 @@ export function renderReader(epubFilePath) {
           if (success) {
             clearSelection();
           } else {
-            alert("La traducción (simulada) falló."); // Informar al usuario
+            alert("La traducción (simulada) falló."); 
           }
         }
       });
@@ -364,22 +302,20 @@ export function renderReader(epubFilePath) {
           noteInputContainer.classList.remove("hidden");
           noteInputText.value = "";
           noteInputText.focus();
-          toggleActionButtons(false); // Deshabilitar otros botones mientras se edita nota
+          toggleActionButtons(false); 
         }
       });
 
-      // Input de Nota: Guardar al presionar Enter
       noteInputText.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
           const nota = noteInputText.value.trim();
           if (nota && seleccionActual?.cfiRange && rendition) {
-            // Pasa rendition a la función importada
             if (applyNote(seleccionActual.cfiRange, nota)) {
               noteInputContainer.classList.add("hidden");
               clearSelection();
             } else {
-              alert("Error al guardar la nota."); // Informar al usuario
+              alert("Error al guardar la nota."); 
             }
           } else if (!nota) {
             // Si presiona Enter sin texto, cancelar
@@ -401,18 +337,14 @@ export function renderReader(epubFilePath) {
     })
     .then(() => {
       console.log("Libro mostrado correctamente.");
-      // Aplicar estado inicial
       updateFontSize(currentFontSizePercentage);
       updateFontFamily(fontFamilySelect.value);
 
       rendition.on("relocated", (location) => {
         console.log("Ubicación cambiada, limpiando selección.");
-        clearSelection(); // Limpiar selección al cambiar página/ubicación
-        // Podrías guardar la última ubicación aquí: location.start.cfi
+        clearSelection(); 
       });
 
-      // Cargar anotaciones guardadas si las hubiera
-      // loadAnnotationsFromStorage(); // Función hipotética
     })
     .catch((error) => {
       console.error("Error fatal durante carga o renderizado del EPUB:", error);
@@ -420,15 +352,6 @@ export function renderReader(epubFilePath) {
         viewer.innerHTML = `<p class="viewer-message error-message">Error al cargar el libro: <br>${error.message}<br>Revisa la consola.</p>`;
       }
       const controls = document.getElementById("controls");
-      if (controls) controls.style.display = "none"; // Ocultar controles si falla la carga
+      if (controls) controls.style.display = "none"; 
     });
 }
-
-// --- Exportaciones Adicionales (Opcional) ---
-// Podrías exportar 'rendition' si otros módulos necesitan interactuar directamente con él,
-// aunque generalmente es mejor exponer funciones específicas como se hizo con las anotaciones.
-// export { rendition };
-
-// --- Ejemplo de cómo llamar a la función (desde tu script principal) ---
-// Supongamos que tienes un botón o lógica que llama a esto con el nombre del archivo:
-// renderReader('nombre-del-libro.epub');

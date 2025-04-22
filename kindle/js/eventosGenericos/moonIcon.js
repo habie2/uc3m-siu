@@ -5,7 +5,6 @@ window.addEventListener("DOMContentLoaded", () => {
     console.log("Switching dark mode...");
     }
 
-    // Añadimos un Event Listener para el evento 'click'
     googleIcon.addEventListener("click", () => {
         if (googleIcon) {
             googleIcon.classList.toggle("filled");

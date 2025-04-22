@@ -9,10 +9,6 @@ export function leerParrafos() {
     textoLimpio = srcdoc.replace(/<[^>]*>/g, "");
   }
 
-  
-  
-
-  
   console.log("siiiiiiiiii") // leer el texto limpio
   return textoLimpio; // leer el texto limpio
   

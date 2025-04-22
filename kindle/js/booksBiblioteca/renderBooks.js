@@ -1,33 +1,24 @@
 import { renderReader } from "../booksViewerEPUB/renderReader.js";
 
 /**
-   * Adjunta los listeners de evento 'click' a cada elemento de libro.
-   * Añadie listener también al botón de biblioteca.
+   * Adjunta addEventListener("click") a cada elemento de libro.
    */
 function attachBookClickListeners() {
   document.querySelectorAll(".book").forEach((el) => {
-    // Primero, removemos cualquier listener antiguo por si acaso esta función se llama múltiples veces
-    // sobre los mismos elementos (aunque en este flujo no debería pasar si renderBooks reemplaza todo)
-    // Para hacer esto correctamente, necesitaríamos una función nombrada para el listener.
-    // Opcional: Si no prevemos re-llamadas complejas, podemos omitir la eliminación por simplicidad.
-
-    // Añadimos el listener
     el.addEventListener("click", handleBookClick);
   });
 }
 
 /**
- * Función manejadora para el evento click en un libro.
- * @param {Event} event - El objeto del evento click.
+ * Función que gestion click en un libro.
+ * @param {Event} event - El objeto evento click.
  */
 function handleBookClick(event) {
-    // 'this' dentro de esta función se referirá al elemento .book que fue clickeado
-    const bookElement = event.currentTarget; // Usar currentTarget es más seguro
+    const bookElement = event.currentTarget; 
     const file = bookElement.getAttribute('data-file');
     console.log("Cargando libro:", file);
 
-    // Asegúrate de que la función renderReader está disponible en este scope
-    renderReader(file);
+    renderReader(file); // renderizamos el libro seleccionado
 }
 
 export async function renderBooks() {
@@ -57,18 +48,3 @@ export async function renderBooks() {
         console.error(err);
     }
 }
-
-export async function getNextCharacters(rendition, book, numChars = 10000) {
-    const currentLocation = rendition.currentLocation().start;
-    const currentCfi = currentLocation.cfi;
-    const range = await book.getRange(currentCfi, book.spine.spineItems.at(-1).cfiBase); // hasta el final del libro
-  
-    if (!range) return '';
-  
-    // Creamos un contenedor temporal para acceder al texto plano
-    const container = document.createElement('div');
-    container.appendChild(range.cloneContents());
-  
-    const fullText = container.textContent || container.innerText || '';
-    return fullText.slice(0, numChars);
-  }

@@ -1,5 +1,8 @@
 import { rendition } from "./renderReader.js";
 
+/**
+ * Función para pasar aa la página previa.
+ */
 export function prevPage() {
   if (rendition) {
     rendition.prev(); // Cambia a la página anterior
@@ -8,6 +11,9 @@ export function prevPage() {
   }
 }
 
+/**
+ * Función para pasar a la siguiente página.
+ */
 export function nextPage() {
   if (rendition) {
     rendition.next(); // Cambia a la siguiente página
@@ -16,7 +22,9 @@ export function nextPage() {
   }
 }
 
-// Función para mostrarla ysimular el apagado del ebook
+/**
+ * Función para poner en reposo al ebook.
+ */
 export function apagarEbook() {
   if (document.documentElement.style.display == "none") {
     document.documentElement.style.display = "block";

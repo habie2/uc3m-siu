@@ -9,34 +9,20 @@
 }
 
 .viewer-container {
-    position: relative; /* Necesario para posicionamiento interno de epubjs */
-    height: 75vh; /* ¡Importante! Dale una altura definida */
-    overflow: hidden; /* Evita barras de scroll inesperadas aquí */
+    position: relative; 
+    height: 75vh; 
+    overflow: hidden;
     border-bottom: 1px solid #ccc;
 }
 
 .viewer {
     width: 100%;
     height: 100%;
-     /* Estilos para el mensaje dentro del viewer */
-    display: flex; /* Para centrar el mensaje inicial */
+    display: flex; 
     justify-content: center;
     align-items: center;
     text-align: center;
 }
-
-/* .viewer-message {
-    padding: 20px;
-    color: #666;
-}
-
-.error-message {
-    color: #D8000C;
-    background-color: #FFD2D2; 
-    border: 1px solid #D8000C;
-    border-radius: 5px;
-}
- */
 
 .controls {
     display: flex;
@@ -78,46 +64,44 @@
   color: #A0AEC0;
 }
 
-/* Estilos para colores de fondo */
 .epub-view > iframe {
-    background: white; /* Fondo del libro */
+    background: white; 
 }
 
 .controls {
-  position: relative; /* O el contenedor que prefieras para posicionar el menú */
-  /* ... otros estilos ... */
+  position: relative; 
 }
 
 .font-control-wrapper {
-    position: relative; /* Necesario para posicionar el menú absolutamente dentro de él */
-    display: inline-block; /* O flex, etc. */
+    position: relative;
+    display: inline-block; 
 }
 
 .font-menu {
   position: absolute;
-  bottom: 100%; /* Posiciona el menú encima del botón */
+  bottom: 100%; 
   left: 50%;
-  transform: translateX(-50%); /* Centra el menú horizontalmente */
+  transform: translateX(-50%);
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  z-index: 10; /* Asegura que esté por encima del contenido */
-  min-width: 200px; /* Ancho mínimo para que quepa bien */
-  display: none; /* Oculto por defecto (JS lo cambiará) */
-  flex-direction: column; /* Organiza las secciones verticalmente */
-  gap: 8px; /* Espacio entre secciones */
+  z-index: 10; 
+  min-width: 200px;
+  display: none; 
+  flex-direction: column; 
+  gap: 8px; 
 }
 
 .font-menu.hidden {
-  display: none; /* Asegura que esté oculto */
+  display: none;
 }
 
 .font-menu-section {
     display: flex;
-    align-items: center; /* Alinea verticalmente los elementos */
-    gap: 5px; /* Espacio entre elementos dentro de la sección */
+    align-items: center;
+    gap: 5px; 
 }
 
 .font-menu-section span,
@@ -126,7 +110,7 @@
 }
 
 .font-menu-section button {
-    min-width: 25px; /* Ancho para botones +/- */
+    min-width: 25px;
     padding: 2px 5px;
 }
 .font-menu-section select {
@@ -135,7 +119,7 @@
 
 #current-font-size {
     font-weight: bold;
-    min-width: 45px; /* Espacio para mostrar '100%' etc. */
+    min-width: 45px;
     text-align: center;
 }
 
