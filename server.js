@@ -58,6 +58,10 @@ io.on('connection', (socket) => {
         io.emit('texto-leido', texto); // Reenviar el texto al Phone
     });
 
+    socket.on("pausar-lectura", () => {
+        io.emit("pausar-lectura"); // Reenviar el evento a todos los sockets
+    });
+
     socket.on("pointer-move", (data) => {
         // 'data' debería contener la información del movimiento, ej: { deltaX: 5, deltaY: -2 }
         console.log("Recibido pointer-move:", data);

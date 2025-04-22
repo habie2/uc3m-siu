@@ -7,7 +7,7 @@ import { rendition } from "./renderReader.js";
  * @returns {Promise<string>} - Promesa que resuelve con el texto "traducido" (simulado).
  */
 async function _translateText_google(text) {
-  const key = 'AIzaSyAVC7h0NPd_Unkq3Z2OwcG9Fzxl91-67YQ'; 
+  const key = 'AIzaSyAVC7h0NPd_Unkq3Z2OwcG9Fzxl91-67YQ';
   const apiUrl = `https://translation.googleapis.com/language/translate/v2`;
 
   const payload = {
@@ -71,17 +71,17 @@ export async function applyTranslation(cfiRange, textToTranslate) {
       (e) => {
         console.log("Clic en traducción", e);
         alert(
-          `Original: ${translationData.original}\nTraducción: ${translationData.translation}`
+          `Traducción: ${translationData.translation}`
         );
       },
-      "translation-highlight" 
+      "translation-highlight"
     );
 
     console.log("Anotación de traducción añadida:", cfiRange);
-    return true; 
+    return true;
   } catch (error) {
     console.error("Error al traducir o aplicar anotación:", error);
-    return false; 
+    return false;
   }
 }
 

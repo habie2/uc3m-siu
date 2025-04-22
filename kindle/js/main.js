@@ -8,7 +8,10 @@ window.addEventListener("DOMContentLoaded", () => {
   // añadimos evento al boton de biblioteca (como si fuera un boton HOME de la wii)
   const libraryButton = document.getElementById("library-button");
   if (libraryButton) {
-    libraryButton.addEventListener("click", renderBooks);
+    libraryButton.addEventListener("click", () => {
+      renderBooks();               // Llamas a tu función
+      socket.emit("pausar-lectura"); // Y emites el evento
+    });
   }
 
   renderBooks(); // Cargar los libros en la biblioteca 

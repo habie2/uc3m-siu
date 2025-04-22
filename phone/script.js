@@ -14,6 +14,10 @@ socket.on("texto-leido", (texto) => {
   setTimeout(() => leerParrafos(texto), 0);
 });
 
+socket.on("pausar-lectura", () => {
+  detenerLectura();
+});
+
 if (window.DeviceOrientationEvent) {
   window.addEventListener(
     "deviceorientation",
@@ -57,6 +61,7 @@ if (window.DeviceOrientationEvent) {
         (lastBeta === null || Math.abs(beta - lastBeta) > 10) // evita activacion constante
       ) {
         console.log("Salir al menu (beta en rango):", beta);
+        detenerLectura();
         socket.emit("exit-book");
         resetInactivityTimer();
         lastVerticalActionTime = now;
@@ -174,14 +179,15 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const nextButton = document.getElementById("exit-book");
   nextButton.addEventListener("click", function () {
+    detenerLectura();
     socket.emit("exit-book");
     resetInactivityTimer();
   });
 
 
 
-  /// Si no metemos esto no lee nada el movil, al menos el mio, al parecer es un problema de seguridad de los navegadores, que no permiten que se inicie la voz sin una interacción del usuario.
-  /// En este caso, lo que hacemos es crear un evento de click o touchstart y al ejecutarse, se desbloquea la voz. Asi que si el primer evento es que te lea en voz alta depende del movil no lo hará.
+  // Si no metemos esto no lee nada el movil, al menos el mio, al parecer es un problema de seguridad de los navegadores, que no permiten que se inicie la voz sin una interacción del usuario.
+  // En este caso, lo que hacemos es crear un evento de click o touchstart y al ejecutarse, se desbloquea la voz. Asi que si el primer evento es que te lea en voz alta depende del movil no lo hará.
   const desbloquearVoz = () => {
     const dummy = new SpeechSynthesisUtterance(" ");
     window.speechSynthesis.speak(dummy);
@@ -197,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const nextButton = document.getElementById("turn-off");
   nextButton.addEventListener("click", function () {
+    detenerLectura();
     socket.emit("turn-off");
     resetInactivityTimer();
   });
@@ -207,6 +214,7 @@ setInterval(() => {
   const now = Date.now();
   if (now - lastInteractionTime > inactivityThreshold) {
     console.log("Inactividad detectada. Apagando pantalla.");
+    detenerLectura();
     socket.emit("turn-off"); // debería ser un evento de apagado de pantalla
     resetInactivityTimer();
     lastInteractionTime = now; // Evita múltiples emisiones seguidas
@@ -353,5 +361,5 @@ if (trackpad) {
   // Opcional: prevenir el menú de contexto
   trackpad.addEventListener("contextmenu", (e) => e.preventDefault());
 } else {
-  console.error("Elemento #trackpad no encontrado.");
+  console.error("Elemento trackpad no encontrado.");
 }
