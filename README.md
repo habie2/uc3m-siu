@@ -1,14 +1,18 @@
 # Integrantes del Grupo
 
-Sonia Navas Rutete 100472180
+Sonia Navas Rutete @SoniaUC3M 100472180
 
-David Sánchez Arranz 100460314
+David Sánchez Arranz @100460314 100460314
 
-Javier Sanz Díaz 100472296
+Javier Sanz Díaz @habie2 100472296
 
 # Ki..ller App
 
-Este proyecto sincroniza un Kindle con una control remoto en el móvil.
+Este proyecto crea un servidor a modo de libro electrónico y permite que se conecte un cliente para el control remoto del libro mediante comandos de voz, gestos y controles. También permite interactuar con el libro y hacer distintas anotaciones.
+
+![docs-homepage](docs/docs-homepage.png)
+
+![docs-anotaciones](docs/docs-anotaciones.png)
 
 ## Cómo iniciar
 
@@ -19,4 +23,4 @@ Este proyecto sincroniza un Kindle con una control remoto en el móvil.
 node server.js
 ```
 
-3. La interfaz kindle se encontrará en https://localhost:3000/kindle/ y la interfaz del móvil en https://localhost:3000/phone/
+3. La interfaz kindle se encontrará en `https://localhost:3000/kindle/` y la interfaz del móvil en `https://localhost:3000/phone/`
